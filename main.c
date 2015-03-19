@@ -102,11 +102,13 @@ char *Myname;   /* プログラム名 */
 
 static void repeat_off( void )
 {
+#if 0
   if( Repeat_mode ){
     XGetKeyboardControl( Disp,&Keyboard );
     XAutoRepeatOff( Disp );
     Repeat_mode = 0;
   }
+#endif
 }
 
 

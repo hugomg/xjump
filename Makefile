@@ -32,7 +32,7 @@ RECORD_ENTRY  = 20
 xjump : main.o game.o key.o misc.o record.o resource.o
 	$(CC) $(CFLAGS) -o xjump \
 		main.o game.o key.o misc.o record.o resource.o\
-		-lXaw -lXmu -lXt -lXpm -lXext -lX11 $(LDIR)
+		-lXaw -lXt -lXpm -lX11 $(LDIR)
 
 main.o : main.c xjump.h record.h \
 		picture.xpm icon.xbm icon_msk.xbm Makefile

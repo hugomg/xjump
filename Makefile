@@ -1,7 +1,9 @@
 ########################################################
 
 # 使用するコンパイラとオプションを指定
-CC      = gcc -O2 
+CC      = gcc
+
+CFLAGS	= -O2
 
 # 標準以外のインクルードファイルのディレクトリを指定
 IDIR    = -I/usr/X11R6/include
@@ -28,28 +30,28 @@ RECORD_ENTRY  = 20
 ##########################################################
 
 xjump : main.o game.o key.o misc.o record.o resource.o
-	$(CC) -o xjump \
+	$(CC) $(CFLAGS) -o xjump \
 		main.o game.o key.o misc.o record.o resource.o\
 		-lXaw -lXmu -lXt -lXpm -lXext -lX11 $(LDIR)
 
 main.o : main.c xjump.h record.h \
 		picture.xpm icon.xbm icon_msk.xbm Makefile
-	$(CC) -c -DRECORD_ENTRY=$(RECORD_ENTRY) main.c $(IDIR)
+	$(CC) $(CFLAGS) -c -DRECORD_ENTRY=$(RECORD_ENTRY) main.c $(IDIR)
 
 resource.o : resource.c
-	$(CC) -c resource.c
+	$(CC) $(CFLAGS) -c resource.c
 
 game.o : game.c xjump.h
-	$(CC) -c game.c $(IDIR)
+	$(CC) $(CFLAGS) -c game.c $(IDIR)
 
 key.o : key.c xjump.h
-	$(CC) -c key.c $(IDIR)
+	$(CC) $(CFLAGS) -c key.c $(IDIR)
 
 misc.o : misc.c
-	$(CC) -c misc.c
+	$(CC) $(CFLAGS) -c misc.c
 
 record.o : record.c record.h Makefile
-	$(CC) -c \
+	$(CC) $(CFLAGS) -c \
 		-DRECORD_ENTRY=$(RECORD_ENTRY) \
 		-DRECORD_FILE=\"$(RECORD_FILE)\" \
 		record.c

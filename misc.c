@@ -6,7 +6,9 @@
   (C) July 16, 1997  ROYALPANDA
 *****************************************/
 
+#include<stdlib.h>
 #include<stdio.h>
+#include<time.h>
 
 
 /* Íð¿ô */

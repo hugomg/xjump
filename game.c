@@ -8,6 +8,8 @@
 
 #include<stdio.h>
 #include<X11/Xlib.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include"xjump.h"
 
@@ -26,7 +28,7 @@ static int T_speed,T_count;   /* スクロールスピード関係 */
 
 static void make_floor( int y )
 {
-  int f,x1,x2,l,fvec;
+  int f,x1,x2,fvec;
   static int fpos = WIDTH/2;
 
   f = Floor_top - y;
@@ -92,7 +94,7 @@ static void del_hero( void )
 
 static void scroll_up( void )
 {
-  int i,x,width,y;
+  int x,width,y;
 
   for( y = Floor_top % 5 ; y < HEIGHT ; y += 5 ){
     x = floor_l(y);
@@ -243,7 +245,7 @@ int move( void )
 
 void init_game( void )
 {
-  int x,y;
+  int y;
 
   Floor_top = HEIGHT - 4;
 

@@ -7,6 +7,7 @@
 *****************************************/
 
 #include<stdio.h>
+#include <stdlib.h>
 #include<unistd.h>
 #include<limits.h>
 #include<sys/types.h>
@@ -481,7 +482,7 @@ static void make_graphic( void )
 
 /* Xlib関係の前処理 */
 
-static int init_graph( void )
+static void init_graph( void )
 {
   int x;
 

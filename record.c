@@ -122,8 +122,8 @@ static char *get_name( int uid, char *name )
     if( i > 0 )
       name[i] = '\0';
     else
-      strcpy( name,pw->pw_name );
-
+      /* Prevent any sort of overflow */
+      sprintf (name, "%.31s", pw->pw_name);
   }
 
   return name;

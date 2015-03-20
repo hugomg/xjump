@@ -1,0 +1,72 @@
+.TH XJUMP 6
+.\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
+.\" other parms are allowed: see man(7), man(1)
+.SH NAME
+xjump \- a jumping game for X
+.SH SYNOPSIS
+.B xjump
+[ -toolkitoption ] ... [ -private ] [ -graphic \fIfile\fR ] [ -keymap ]
+.br
+.B xjump
+[ -help ]
+.SH "DESCRIPTION"
+.B Xjump
+is a jumping game where you are in a Falling Tower. The floor you are
+standing on is sinking with the rest of the building; you will die once the
+floor gives way (disappears under the bottom of the display). To survive,
+you have to jump onto the upper floors of the tower. Because the entire tower
+is sinking, the upper floors will soon collapse, too, so you have to keep on
+jumping to higher floors.
+
+Your score is counted by how many floors you jump before you either fall off
+while trying to reach the next floor, or the floor you are standing on
+collapses.
+.SH OPTIONS
+.TP
+.BI \-toolkitoption " ..."
+Specify X toolkit options (such as \fI-geometry\fR, \fI-display\fR, etc.).
+.TP
+.BR \-private
+Use private colormap.
+.TP
+.BI \-graphic " FILE"
+Use the XPM graphic file
+.I FILE
+for graphics.
+.TP
+.BR \-keymap
+Read keymap directly.
+.TP
+.BR \-help
+Display a summary of command-line syntax.
+
+.SH "GAME CONTROLS"
+To begin the game, press the \fISpace-bar\fR from the highscore screen.
+.PP
+Once the game begins, movement is controlled by the \fILeft\fR and \fIRight\fR
+arrow keys. To jump, use the \fIUp\fR arrow key.
+.PP
+Note that hitting the Left or Right arrow keys many times will cause the
+player to go faster. You can use this to reach floors that are far away.
+But be careful not to jump too far and miss! You can also change your speed
+while jumping through midair. If your reflexes are fast enough, you can
+salvage a bad jump this way. Good luck!
+.PP
+To quit the game, press \fIshift-Q\fR.
+.SH "COPYRIGHT"
+ Copyright (C) 1997-1999
+ Tatsuya Kudoh(CDR/TK) <kudoh@koken.club.uec.ac.jp>
+ Masato Taruishi       <taru@debian.org>
+.PP
+This is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version without ANY WARRANTIES.
+.SH "AUTHOR"
+.B xjump
+was written by Tatsuya Kudoh(CDR/TK) <kudoh@koken.club.uec.ac.jp> and
+Masato Taruishi <taru@debian.org>.
+.PP
+This manual page was written by H. S. Teoh <hsteoh@debian.org>,
+for the Debian GNU/Linux system. The original game does not come with
+a manual page.

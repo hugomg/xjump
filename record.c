@@ -222,7 +222,7 @@ static void sort_record( void )
   for( i = 0 ; i < Record_entry ; i++ )
     Record[i].rank = i;
 
-  qsort( Record,Record_entry,sizeof(record_t),sort_cmp );
+  qsort( Record,Record_entry,sizeof(record_t),  (int (*)(const void*, const void*)) sort_cmp );
 }
 
 

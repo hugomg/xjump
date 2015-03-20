@@ -379,11 +379,13 @@ static void set_icon( void )
 {
   Pixmap icon,mask;
 
-  icon = XCreateBitmapFromData( Disp,DefaultRootWindow(Disp),icon_bits,
-			       icon_width,icon_height );
+  /* casting to char* is fine according to http://stackoverflow.com/a/12786292 */
 
-  mask = XCreateBitmapFromData( Disp,DefaultRootWindow(Disp),icon_msk_bits,
-			       icon_msk_width,icon_msk_height );
+  icon = XCreateBitmapFromData( Disp,DefaultRootWindow(Disp), (char*) icon_bits,
+                                icon_width, icon_height );
+
+  mask = XCreateBitmapFromData( Disp,DefaultRootWindow(Disp), (char*) icon_msk_bits,
+                                icon_msk_width,icon_msk_height );
 
   XtVaSetValues( Top,XtNiconPixmap,icon,XtNiconMask,mask,NULL );
 }

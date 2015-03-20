@@ -60,9 +60,6 @@ static unsigned int Sc_now;
 
 static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* ハイスコアテキスト */
 
-static XKeyboardState Keyboard;  /* キーボードステータス */
-static int Repeat_mode = 1;      /* キーリピートの状態(1:default 0:off) */
-
 static int Use_keymap = 0;       /* キーマップを直接読むか？ */
 
 /* プロトタイプ宣言 */
@@ -101,30 +98,15 @@ char *Myname;   /* プログラム名 */
 
 /* キーリピートを止める */
 
-static void repeat_off( void )
+static void focus_in( void )
 {
-#if 0
-  if( Repeat_mode ){
-    XGetKeyboardControl( Disp,&Keyboard );
-    XAutoRepeatOff( Disp );
-    Repeat_mode = 0;
-  }
-#endif
 }
 
 
 /* キーリピートを元に戻す */
 
-static void repeat_on( void )
+static void focus_out( void )
 {
-  if( !Repeat_mode ){
-    if( Keyboard.global_auto_repeat )
-      XAutoRepeatOn( Disp );
-    else
-      XAutoRepeatOff( Disp );
-
-    Repeat_mode = 1;
-  }
 }
 
 
@@ -270,9 +252,9 @@ static void timi( XtPointer c,XtIntervalId id )
 static void focus( Widget w,XtPointer p,XEvent *e )
 {
   if( e->type == FocusIn )
-    repeat_off();
+    focus_in();
   else
-    repeat_on();
+    focus_out();
 }
 
 
@@ -289,8 +271,6 @@ static void expose( Widget w,XtPointer p,XEvent *e )
 
 static void quit_game( Widget w,XEvent *e,String *s,Cardinal *num )
 {
-  repeat_on();
-  XFlush( Disp );
   exit(0);
 }
 
@@ -299,8 +279,6 @@ static void quit_game( Widget w,XEvent *e,String *s,Cardinal *num )
 
 static void sig_handler( int i )
 {
-  repeat_on();
-  XFlush( Disp );
   exit(0);
 }
 

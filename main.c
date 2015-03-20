@@ -417,7 +417,6 @@ static void help()
 {
   fprintf( stderr,"Usage: %s [options]\n",Myname );
   fprintf( stderr,"\t-toolkitoption ...\n" );
-  fprintf( stderr,"\t-private\t\tuse private colormap.\n" );
   fprintf( stderr,"\t-graphic \"file\"\t\tuse your xpm graphic \"file\"\n" );
   fprintf( stderr,"\t-keymap\t\t\tread keymap directly.\n" );
   fprintf( stderr,"\t-help\t\t\tshow this messages.\n" );
@@ -431,14 +430,6 @@ static void option( int argc, char **argv )
   int i;
 
   for( i = 1 ; i < argc ; i++ ){
-
-    if( strcmp( argv[i],"-private" ) == 0 ){
-      Cmap =
-	XCreateColormap( Disp,DefaultRootWindow(Disp),
-			DefaultVisual(Disp,DefaultScreen(Disp)),AllocNone );
-      XtVaSetValues( Top,XtNcolormap,Cmap,NULL );
-      continue;
-    }
 
     if( strcmp( argv[i],"-graphic" ) == 0 ){
       GraphFile = argv[++i];

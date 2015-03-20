@@ -11,12 +11,10 @@ FALLING TOWERは、崩れる塔を上へ上へと登って行くゲームです。
 
 ◎ 起動方法
 
-xjump [-toolkitoption] [-graphic "graph_file"] [-private] [-keymap] [-help]
+xjump [-toolkitoption] [-graphic "graph_file"] [-keymap] [-help]
 
 	-graphic  ユーザーが定義したグラフィックを使用する時、
 	          そのファイル名を指定(後述)。
-
-	-private  プライベートカラーマップを使用。
 
 	-keymap   キーマップを直接読む(後述)
 

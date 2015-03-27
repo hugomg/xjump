@@ -77,7 +77,8 @@ static void draw_hero( void )
   sy = ( pic >> 2 ) * 32;
 
   XSetClipOrigin( Disp,Gc_mask,Hero.x-sx,Hero.y-sy );
-  XCopyArea( Disp,Char_p,Scr_d,Gc_mask,sx,sy,32,32,Hero.x,Hero.y );
+  int hh = min(32, HEIGHT*16 - Hero.y);
+  XCopyArea( Disp,Char_p,Scr_d,Gc_mask,sx,sy,32,hh,Hero.x,Hero.y );
 
 }
 
@@ -275,7 +276,7 @@ void recover_scr( int x, int y, int width, int height )
 {
   int xl,xr,y2;
 
-  y2 = (y+height-1) / 16;
+  y2 = min(HEIGHT-1, (y+height-1) / 16);
   y /= 16;
 
   for( ; y <= y2 ; y++ ){

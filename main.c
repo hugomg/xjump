@@ -58,7 +58,7 @@ static int GameMode; /* モード (0タイトル  1ゲーム  2ゲームオーバー 3ポーズ) */
 
 static unsigned int Sc_now;
 
-static char Score_list[43*(RECORD_ENTRY+2)+1]="";    /* ハイスコアテキスト */
+static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* ハイスコアテキスト */
 
 static XKeyboardState Keyboard;  /* キーボードステータス */
 static int Repeat_mode = 1;      /* キーリピートの状態(1:default 0:off) */
@@ -154,9 +154,17 @@ static void make_score( void )
   p += sprintf( p,"RANK    FLOOR               NAME\n\
 ----  ----------  -------------------------------\n");
 
-  for( i = 0 ; i < Record_entry ; i++ )
-    p += sprintf( p,"%4d  %10d        %-20.20s\n",i+1,
-	    Record[i].score,Record[i].name );
+  for( i = 0 ; i < Record_entry ; i++ ){
+    size_t space_available = sizeof(Score_list) - (p-Score_list);
+    int nprinted = snprintf(p, space_available,"%4d  %10d        %-20.20s\n",i+1,
+                            Record[i].score, Record[i].name );
+    if(nprinted <= space_available){
+      p += nprinted;
+    }else{
+      p += space_available;
+      break;
+    }
+  }
 
   p--;
   *p = '\0';

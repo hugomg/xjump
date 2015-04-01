@@ -11,11 +11,9 @@ For installation instructions, read INSTALL.
 ## How to run xjump
 ===================
 
-xjump [-toolkitoption] [-graphic "graph_file"] [-keymap] [-help]
+xjump [-toolkitoption] [-graphic "graph_file"] [-help]
 
         -graphic  Specify a custom graphics file (see below)
-
-        -keymap   Read the keyboard keycodes directly (see below)
 
         -help     Show this help message
 
@@ -40,11 +38,6 @@ YOu can use the following actions in XJump*game.translation:
 
     key_on(key)
     key_off(key)
-
-When the -keymap option is specified, xjump reads the
-keyboard state directly and ignores the key_on and key_off
-events from X.This is useful for X servers that do not support
-key-release events.
 
 ## Custom graphics
 ==================

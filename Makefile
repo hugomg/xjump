@@ -23,9 +23,9 @@ RECORD_ENTRY  = 20
 
 ##########################################################
 
-xjump : main.o game.o key.o misc.o record.o resource.o
+xjump : main.o game.o misc.o record.o resource.o
 	$(CC) $(CFLAGS) -o xjump \
-		main.o game.o key.o misc.o record.o resource.o\
+		main.o game.o misc.o record.o resource.o\
 		-lXaw -lXt -lXpm -lX11 $(LDIR)
 
 main.o : main.c xjump.h record.h \
@@ -37,9 +37,6 @@ resource.o : resource.c
 
 game.o : game.c xjump.h
 	$(CC) $(CFLAGS) -c game.c $(IDIR)
-
-key.o : key.c xjump.h
-	$(CC) $(CFLAGS) -c key.c $(IDIR)
 
 misc.o : misc.c
 	$(CC) $(CFLAGS) -c misc.c

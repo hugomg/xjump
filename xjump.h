@@ -65,10 +65,6 @@ void recover_scr( int x, int y, int x2, int y2 );
 int rnd( int range );
 void srnd( void );
 
-void query_keycode( void );
-void keymap( void );
-void wait_keyup( void );
-
 /* Macros */
 
 #define floor_r(y)  Floor_R[ ( y+Map_index) % HEIGHT ]

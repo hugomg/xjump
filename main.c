@@ -60,8 +60,6 @@ static unsigned int Sc_now;
 
 static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* High score text buffer */
 
-static int Use_keymap = 0;
-
 /* Prototypes */
 
 static void timi( XtPointer c, XtIntervalId id );
@@ -171,9 +169,6 @@ static void gameover( void )
 {
   XtMapWidget( Gameover );
 
-  if( Use_keymap )
-    wait_keyup();
-
   GameMode = OVER;
 
   save_record( Sc_now );
@@ -204,8 +199,6 @@ static void timi( XtPointer c,XtIntervalId id )
   switch( GameMode ){
 
   case GAME:
-    if( Use_keymap )
-      keymap();
     floor = move();
     if( floor == DEAD ){
       gameover();
@@ -264,9 +257,6 @@ static void start_game( Widget w,XEvent *e,String *s,Cardinal *num )
   switch( GameMode ){
   case TITLE:
 
-    if( Use_keymap )
-      wait_keyup();
-
     XtUnmapWidget( Score_v );
     XtUnmapWidget( Gameover );
     reset_timer();
@@ -306,9 +296,6 @@ static void pause_game( Widget w,XEvent *e,String *s,Cardinal *num )
 
 static void key_on( Widget w,XEvent *e,String *s,Cardinal *num )
 {
-  if( Use_keymap )
-    return;
-
   switch( **s ){
   case 'U':
     Key[ KEY_UP ] = 1;
@@ -328,9 +315,6 @@ static void key_on( Widget w,XEvent *e,String *s,Cardinal *num )
 
 static void key_off( Widget w,XEvent *e,String *s,Cardinal *num )
 {
-  if( Use_keymap )
-    return;
-
   switch( **s ){
   case 'U':
     Key[ KEY_UP ] = 0;
@@ -368,7 +352,6 @@ static void help()
   fprintf( stderr,"Usage: %s [options]\n",Myname );
   fprintf( stderr,"\t-toolkitoption ...\n" );
   fprintf( stderr,"\t-graphic \"file\"\t\tuse your xpm graphic \"file\"\n" );
-  fprintf( stderr,"\t-keymap\t\t\tread keymap directly.\n" );
   fprintf( stderr,"\t-help\t\t\tshow this messages.\n" );
 }
 
@@ -383,11 +366,6 @@ static void option( int argc, char **argv )
 
     if( strcmp( argv[i],"-graphic" ) == 0 ){
       GraphFile = argv[++i];
-      continue;
-    }
-
-    if( strcmp( argv[i],"-keymap" ) == 0 ){
-      Use_keymap = 1;
       continue;
     }
 
@@ -534,9 +512,6 @@ int main( int argc,char **argv )
   XtAddEventHandler( Scr,ExposureMask,FALSE,(XtEventHandler)expose,NULL );
 
   XtAppAddActions( App,a_table,XtNumber(a_table) );
-
-  if( Use_keymap )
-    query_keycode();
 
   if( signal( SIGINT,SIG_IGN ) != SIG_IGN )
     signal( SIGINT,sig_handler );

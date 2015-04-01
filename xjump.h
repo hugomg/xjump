@@ -61,6 +61,7 @@ extern GC Gc_mask;
 void init_game( void );
 int move( void );
 void recover_scr( int x, int y, int x2, int y2 );
+void draw_hero( void );
 
 int rnd( int range );
 void srnd( void );

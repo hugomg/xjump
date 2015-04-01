@@ -68,7 +68,7 @@ static void make_floor( int y )
 
 /* Draw the player sprite */
 
-static void draw_hero( void )
+void draw_hero( void )
 {
   int pic;
   int sx,sy;

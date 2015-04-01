@@ -233,6 +233,7 @@ static void expose( Widget w,XtPointer p,XEvent *e )
 {
   recover_scr( e->xexpose.x,e->xexpose.y,
 	      e->xexpose.width,e->xexpose.height );
+  draw_hero();
 }
 
 /* Action handler for quit-game shortcut */

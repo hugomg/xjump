@@ -1,8 +1,8 @@
 /*****************************************
   xjump version 2
 
-  main.c   初期化 ／ X Intrinsics関係
-
+  main.c   Initialization / X Intrinsics stuff
+  
   (C) Oct 28, 1997  ROYALPANDA
 *****************************************/
 
@@ -35,83 +35,78 @@
 
 extern char *DefaultResources[];
 
-static XtAppContext App;   /* アプリケーションコンテクスト */
+static XtAppContext App;
 
 static Widget
-       Top,              /* 最上位                        */
-       Score,            /* スコア(ラベル)                */
-       Scr,              /* メイン画面（コア)             */
-       Score_v,          /* ハイスコア(ビューポート)      */
-       ScoreList,        /* ハイスコア(ラベル)            */
-       Gameover,         /* ゲームオーバー(ラベル)        */
-       Pause;            /* ポーズ(ラベル)                */
+       Top,
+       Score,
+       Scr,
+       Score_v,
+       ScoreList,
+       Gameover,
+       Pause;
 
 
-static Colormap Cmap;    /* カラーマップ */
+static Colormap Cmap;
 
-static int IntervalState;       /* タイマ処理中? */
-static XtIntervalId IntervalId; /* タイマー処理のＩＤ */
+static int IntervalState;
+static XtIntervalId IntervalId;
 
-static char *GraphFile = NULL;     /* ユーザーグラフィックファイル */
+static char *GraphFile = NULL; /* For custom graphics */
 
-static int GameMode; /* モード (0タイトル  1ゲーム  2ゲームオーバー 3ポーズ) */
+static int GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
 
 static unsigned int Sc_now;
 
-static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* ハイスコアテキスト */
+static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* High score text buffer */
 
-static int Use_keymap = 0;       /* キーマップを直接読むか？ */
+static int Use_keymap = 0;
 
-/* プロトタイプ宣言 */
+/* Prototypes */
 
 static void timi( XtPointer c, XtIntervalId id );
 
 
-/* グローバル変数 */
+/* Globals */
 
-Display *Disp;           /* ディスプレイ構造体 */
+Display *Disp;
 
-GC Gc_nomask;            /* GC (マスク無し) */
-GC Gc_mask;              /* GC (マスクあり) */
+GC Gc_nomask;
+GC Gc_mask;
 
-Drawable Scr_d;          /* メイン画面 */
-Pixmap Char_p;           /* キャラクタ */
-Pixmap Char_m;           /* キャラクタ(マスク) */
-Pixmap Floor_p;          /* 床 */
-Pixmap Back_p;           /* 背景 */
+Drawable Scr_d;
+Pixmap Char_p;
+Pixmap Char_m;
+Pixmap Floor_p;
+Pixmap Back_p;
 
-int Key[3] = {0,0,0};    /* キーの状態 */
+int Key[3] = {0,0,0};    /* Keyboard state */
 
-hero_t Hero;             /* 主人公の状態 */
+hero_t Hero;             /* Hero state */
 
-int Floor_L[ HEIGHT ];   /* 床の情報 */
+int Floor_L[ HEIGHT ];   /* Current floors */
 int Floor_R[ HEIGHT ];
 
 int Map_index;
 int Floor_top;
 
-record_t Record[ RECORD_ENTRY ];  /* ハイスコアリスト                    */
-int Record_entry;                 /* ハイスコアリストの数  -1:記録しない */
+record_t Record[ RECORD_ENTRY ];
+int Record_entry; /* Size of high-score list;  -1 means scores are not being recorded */
 
-char *Myname;   /* プログラム名 */
+char *Myname;   /* Program name */
 
-
-/* キーリピートを止める */
 
 static void focus_in( void )
 {
 }
 
 
-/* キーリピートを元に戻す */
-
 static void focus_out( void )
 {
 }
 
 
-/* スコア表示 */
-
+/* Show current score */
 static void put_score( void )
 {
   char buf[12];
@@ -120,9 +115,7 @@ static void put_score( void )
   XtVaSetValues( Score,XtNlabel,buf,NULL );
 }
 
-
-/* ハイスコア画面作成 */
-
+/* Show highscores table */
 static void make_score( void )
 {
   int i;
@@ -157,8 +150,6 @@ static void make_score( void )
 }
 
 
-/* タイマー中断 */
-
 static void reset_timer( void )
 {
   if( IntervalState ){
@@ -166,9 +157,6 @@ static void reset_timer( void )
     IntervalState = 0;
   }
 }
-
-
-/* タイマースタート */
 
 static void set_timer( void )
 {
@@ -178,8 +166,6 @@ static void set_timer( void )
   IntervalState = 1;
 }
 
-
-/* ゲームオーバー */
 
 static void gameover( void )
 {
@@ -195,9 +181,6 @@ static void gameover( void )
 
 }
 
-
-/* タイトル */
-
 static void title( void )
 {
   reset_timer();
@@ -208,9 +191,6 @@ static void title( void )
     XtMapWidget( Score_v );
 }
 
-
-
-/* タイマー処理ルーチン */
 
 static void timi( XtPointer c,XtIntervalId id )
 {
@@ -246,9 +226,7 @@ static void timi( XtPointer c,XtIntervalId id )
   }
 }
 
-
-/* フォーカス変更(キーリピートの切替え)(イベントハンドラ) */
-
+/* Focus change event handler */
 static void focus( Widget w,XtPointer p,XEvent *e )
 {
   if( e->type == FocusIn )
@@ -257,25 +235,21 @@ static void focus( Widget w,XtPointer p,XEvent *e )
     focus_out();
 }
 
-
-/* エクスポーズ処理 (イベントハンドラ) */
-
+/* Expose-screen event handler */
 static void expose( Widget w,XtPointer p,XEvent *e )
 {
   recover_scr( e->xexpose.x,e->xexpose.y,
 	      e->xexpose.width,e->xexpose.height );
 }
 
-
-/* プログラム終了 (アクションハンドラ) */
-
+/* Action handler for quit-game shortcut */
 static void quit_game( Widget w,XEvent *e,String *s,Cardinal *num )
 {
   exit(0);
 }
 
 
-/* プログラム終了(シグナルハンドラ) */
+/* End-of-program handler if signal is received */
 
 static void sig_handler( int i )
 {
@@ -283,7 +257,7 @@ static void sig_handler( int i )
 }
 
 
-/* スタート (アクションハンドラ) */
+/* Start game action handler */
 
 static void start_game( Widget w,XEvent *e,String *s,Cardinal *num )
 {
@@ -311,7 +285,7 @@ static void start_game( Widget w,XEvent *e,String *s,Cardinal *num )
 }
 
 
-/* ポーズ (アクションハンドラ) */
+/* Pause game action handler */
 
 static void pause_game( Widget w,XEvent *e,String *s,Cardinal *num )
 {
@@ -328,7 +302,7 @@ static void pause_game( Widget w,XEvent *e,String *s,Cardinal *num )
 
 
 
-/* キー押された(アクションハンドラ) */
+/* Keydown action handler */
 
 static void key_on( Widget w,XEvent *e,String *s,Cardinal *num )
 {
@@ -350,7 +324,7 @@ static void key_on( Widget w,XEvent *e,String *s,Cardinal *num )
   }
 }
 
-/* キー離された (アクションハンドラ) */
+/* Keyup action handler */
 
 static void key_off( Widget w,XEvent *e,String *s,Cardinal *num )
 {
@@ -373,8 +347,6 @@ static void key_off( Widget w,XEvent *e,String *s,Cardinal *num )
 }
 
 
-/* アイコンの設定 */
-
 static void set_icon( void )
 {
   Pixmap icon,mask;
@@ -391,8 +363,6 @@ static void set_icon( void )
 }
 
 
-/* ヘルプ */
-
 static void help()
 {
   fprintf( stderr,"Usage: %s [options]\n",Myname );
@@ -403,7 +373,7 @@ static void help()
 }
 
 
-/* コマンドラインオプション解析 */
+/* Process command-line args */
 
 static void option( int argc, char **argv )
 {
@@ -432,7 +402,7 @@ static void option( int argc, char **argv )
 }  
 
 
-/* グラフィックの作成／読み込み */
+/* Initialize graphics and textures */
 
 static void make_graphic( void )
 {
@@ -459,7 +429,7 @@ static void make_graphic( void )
 
 
 
-/* Xlib関係の前処理 */
+/* Xlib initialization */
 
 static void init_graph( void )
 {
@@ -486,9 +456,6 @@ static void init_graph( void )
     XCopyArea( Disp,Char_p,Back_p,Gc_nomask,128,0,16,16,x,0 );
 
 }
-
-
-/* メイン */
 
 int main( int argc,char **argv )
 {

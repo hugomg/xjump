@@ -1,7 +1,7 @@
 /*****************************************
   xjump version 2
 
-  game.c   移動・描画関係
+  game.c   Movement and drawing routines
 
   (C) July 28, 1997  ROYALPANDA
 *****************************************/
@@ -14,17 +14,18 @@
 #include"xjump.h"
 
 
-/* マクロ */
+/* Macros */
 
 #define max( a,b ) ( (a) > (b) ? (a) : (b) )
 #define min( a,b ) ( (a) < (b) ? (a) : (b) )
 
-/* 変数 */
+/* Variables */
 
-static int T_speed,T_count;   /* スクロールスピード関係 */
+static int T_speed; /* Current scrolling speed */
+static int T_count; /* Total scroll displacement */
  
 
-/* 床を設定／描画する */
+/* Generate a new floor and draw it on the screen */
 
 static void make_floor( int y )
 {
@@ -65,7 +66,7 @@ static void make_floor( int y )
 }
 
 
-/* 主人公を表示 */
+/* Draw the player sprite */
 
 static void draw_hero( void )
 {
@@ -83,7 +84,7 @@ static void draw_hero( void )
 }
 
 
-/* 主人公を消す */
+/* Undraw the player sprite */
 
 static void del_hero( void )
 {
@@ -91,7 +92,7 @@ static void del_hero( void )
 }
 
 
-/* １ラインスクロール */
+/* Scroll up by one line */
 
 static void scroll_up( void )
 {
@@ -118,7 +119,7 @@ static void scroll_up( void )
 }
 
 
-/* 主人公が床の上にいるか判定 */
+/* Determine if the hero is currently standing on a platform */
 
 static int stand( void )
 {
@@ -138,7 +139,7 @@ static int stand( void )
 }
 
 
-/* 主人公の移動 */
+/* Move the player sprite */
 
 int move( void )
 {
@@ -242,7 +243,7 @@ int move( void )
 }
 
 
-/* ゲーム初期化 */
+/* Initialize the game */
 
 void init_game( void )
 {
@@ -270,7 +271,7 @@ void init_game( void )
 }
 
 
-/* 画面を修復 */
+/* Repaint the background in a portion of the screen */
 
 void recover_scr( int x, int y, int width, int height )
 {

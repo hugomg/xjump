@@ -1,7 +1,7 @@
 /*****************************************
   xjump version 2
 
-  record.h   ヘッダ( レコード関連 )
+  record.h
 
   (C) July 16, 1997  ROYALPANDA
 *****************************************/
@@ -9,10 +9,10 @@
 
 typedef struct {
 
-  int score;       /* 得点 */
-  int uid;         /* ユーザーID */
-  char name[32];   /* 名前 */
-  int rank;        /* 順位 */
+  int score;
+  int uid;
+  char name[32];
+  int rank;
 
 } record_t;
 

@@ -1,0 +1,77 @@
+FALLING TOWER Version 2.6 User Manual
+
+(C) Oct 28, 1997 ROYALPANDA
+
+FALLING TOWER is a game where you jump up and up while the tower collapses under your feet.
+
+For installation instructions, read INSTALL.
+
+
+
+## How to run xjump
+===================
+
+xjump [-toolkitoption] [-graphic "graph_file"] [-keymap] [-help]
+
+        -graphic  Specify a custom graphics file (see below)
+
+        -keymap   Read the keyboard keycodes directly (see below)
+
+        -help     Show this help message
+
+## Game controls
+================
+
+        shift-Q : Exit game
+        P       : Pause / Resume
+        
+        You can move sideways arrow keys, keypad keys and mouse buttons
+        You can jump with the up arrow keys, Z, SPACE
+        
+## Custom keybindings
+=====================
+
+Keybindings can be configured via X resource files.
+YOu can use the following actions in XJump*game.translation:
+
+    start()
+    pause()
+    quit()
+
+    key_on(key)
+    key_off(key)
+
+When the -keymap option is specified, xjump reads the
+keyboard state directly and ignores the key_on and key_off
+events from X.This is useful for X servers that do not support
+key-release events.
+
+## Custom graphics
+==================
+
+Xjump can use custom textures in xpm format. The required dimensions are 144x64.
+
+In the following diagram, each letter represents a 16x16 pixel area.
+
+11223344A
+11223344B
+55667788C
+55667788D
+
+  Legend:
+  
+  1 = Standing, moving left  (1/2)
+  2 = Standing, moving right (1/2)
+  3 = Standing, moving left  (2/2)
+  4 = Standing, moving right (2/2)
+  5 = Going up, moving left
+  6 = Going up, moving right
+  7 = Falling,  moving left
+  8 = Falling,  moving right
+  
+  A = Wall background
+  B = Left column
+  C = Right column
+  D = Platform
+
+For an example, see picture.xpm in xjump's source code.

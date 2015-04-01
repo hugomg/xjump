@@ -1,0 +1,56 @@
+FALLING TOWER Version 2 Installation Manual
+
+(C) July 17, 1997 ROYALPANDA
+
+
+## Requirements
+===============
+
+* A xpm library is required
+* An user named "games", to own the highscores file. (I think its standard)
+
+## How to Install
+=================
+
+The instalation procedures are a bit different depending on whether you
+want to install for all users or just yourself.
+
+### System install
+------------------
+
+1. Edit the Makefile if you want to change some settings.
+
+2. Compile the xjump binary
+
+        % make
+
+3. Install xjump
+
+        % sudo make install
+
+### Local install
+-----------------
+
+1. Edit the Makefile to point the highscores file to
+   somewhere you control.
+   For example, /home/hogehoge/xjump_record/record
+
+2. Compile the xjump binary
+
+        % make
+
+3. Finally, install the game
+
+        % install -c -s -m 4755 xjump ~hogehoge/bin
+        % mkdir ~hogehoge/xjump_record
+        % touch ~hogehoge/xjump_record/record
+
+## Important considerations:
+============================
+
+In order to make sure the highscores are recorded:
+
+* The location of the highscores file is statically assigned to the binary
+  during compilation. You must make sure that that file exists.
+* The xjump binary and the highscores file must have the same owner.
+* Make sure the setuid/setgid bits are correctly set in the binary

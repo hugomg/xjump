@@ -1,24 +1,24 @@
 /*****************************************
   xjump version 2
 
-  xjump.h   ヘッダ( レコード関連除く )
+  xjump.h   Header for non-highscore stuff
 
   (C) Oct 28, 1997  ROYALPANDA
 *****************************************/
 
-/* キーの定義 */
+/* Control keys */
 
 #define KEY_UP    0
 #define KEY_LEFT  1
 #define KEY_RIGHT 2
 
 
-/* 生死判定用 */
+/* For life and death decisions */
 
 #define DEAD -1
 
 
-/* 画面サイズ */
+/* Size of visible gameplay area */
 
 #define WIDTH  32
 #define HEIGHT 24
@@ -26,14 +26,14 @@
 
 typedef struct{
 
-  int x;         /* 座標 x */
-  int y;         /* 座標 y */
-  int vx;        /* 速度 x */
-  int vy;        /* 速度 y */
-  int jump;      /* ジャンプ力 */
-  int pic;       /* グラフィック */
-  int dir;       /* 向き */
-  int g_count;   /* アニメーション用カウンタ */
+  int x;
+  int y;
+  int vx;
+  int vy;
+  int jump;
+  int pic;
+  int dir;
+  int g_count;   /* Animation counter */
 
 } hero_t;
 
@@ -69,7 +69,7 @@ void query_keycode( void );
 void keymap( void );
 void wait_keyup( void );
 
-/* マクロ */
+/* Macros */
 
 #define floor_r(y)  Floor_R[ ( y+Map_index) % HEIGHT ]
 #define floor_l(y)  Floor_L[ ( y+Map_index) % HEIGHT ]

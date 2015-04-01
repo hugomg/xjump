@@ -1,30 +1,24 @@
 ########################################################
 
-# 使用するコンパイラとオプションを指定
+# Compiler options
+
 CC      = gcc
-
 CFLAGS	= -O2
-
-# 標準以外のインクルードファイルのディレクトリを指定
 IDIR    = -I/usr/X11R6/include
-
-# 標準以外のライブラリのディレクトリを指定
 LDIR    = -L/usr/X11R6/lib
 
 #########################################################
 
-# インストール先を指定
+# Instalation options
+
 TARGET = /usr/games/
 
-# レコードファイルのディレクトリを指定
 RECORD_DIR  = /var/games/xjump
-
-#レコードファイルのファイル名を指定(注：これはバイナリに埋め込まれます)
 RECORD_FILE  = $(RECORD_DIR)/record
 
 #########################################################
 
-# レコードのエントリ数を指定(注：これはバイナリに埋め込まれます)
+# Maximum size of the highscores table? (This gets embedded in the binary)
 RECORD_ENTRY  = 20
 
 ##########################################################

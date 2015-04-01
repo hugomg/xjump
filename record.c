@@ -1,7 +1,7 @@
 /*****************************************
   xjump version 2
 
-  record.c   得点記録
+  record.c   Highscore recording
 
   (C) July 16, 1997  ROYALPANDA
 *****************************************/
@@ -18,8 +18,6 @@
 
 #include"record.h"
 
-
-/* スペース読み飛ばし */
 
 static int skipspace( FILE *fp )
 {
@@ -38,8 +36,6 @@ static int skipspace( FILE *fp )
   }
 }
 
-
-/* 数値読み込み */
 
 static int read_num( FILE *fp )
 {
@@ -68,7 +64,6 @@ static int read_num( FILE *fp )
     return i;
 }
 
-/* 名前の読み込み */
 
 static void read_name( char *buf, FILE *fp )
 {
@@ -91,8 +86,6 @@ static void read_name( char *buf, FILE *fp )
 }
 
 
-/* 行末まで読み飛ばす */
-
 static void void_line( FILE *fp )
 {
   int c;
@@ -102,7 +95,7 @@ static void void_line( FILE *fp )
 }
 
 
-/* UIDからリアルネームを取り出す */
+/* Get real name given UID */
 
 static char *get_name( int uid, char *name )
 {
@@ -131,7 +124,7 @@ static char *get_name( int uid, char *name )
 }
 
 
-/*　レコードの１エントリー読み込み　*/
+/* Read one entry from record file */
 
 static int read_entry( FILE *fp, record_t *rec )
 {
@@ -149,7 +142,7 @@ static int read_entry( FILE *fp, record_t *rec )
 }
 
 
-/* レコード読みだし */  
+/* Read all entries from record file */  
 
 static void read_record( FILE *fp )
 {
@@ -166,9 +159,6 @@ static void read_record( FILE *fp )
 }
 
 
-
-/* エラー */
-
 static void error( void )
 {
   perror( Myname );
@@ -176,9 +166,6 @@ static void error( void )
 
   Record_entry = -1;
 }
-
-
-/* レコード関係の初期化 */
 
 void init_record( void )
 {
@@ -195,9 +182,6 @@ void init_record( void )
   fclose( fp );
 }
 
-
-/* ソート比較関数 */
-
 static int sort_cmp( record_t *r1, record_t *r2 )
 {
   if( r1->score > r2->score )
@@ -212,9 +196,6 @@ static int sort_cmp( record_t *r1, record_t *r2 )
 }
 
 
-
-/* ソート */
-
 static void sort_record( void )
 {
   int i;
@@ -225,9 +206,6 @@ static void sort_record( void )
   qsort( Record,Record_entry,sizeof(record_t),  (int (*)(const void*, const void*)) sort_cmp );
 }
 
-
-
-/* レコード記録 */
 
 void save_record( int sc )
 {

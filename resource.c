@@ -1,7 +1,7 @@
 /*****************************************
   xjump version 2
 
-  resource.h   フォールバックリソース
+  resource.c   Fallback resources
 
   (C) Nov 8, 1997  ROYALPANDA
 *****************************************/

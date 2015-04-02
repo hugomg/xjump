@@ -27,11 +27,14 @@
 #include"icon.xbm"
 #include"icon_msk.xbm"
 
-#define TITLE 0
-#define GAME  1
-#define OVER  2
-
 #define SPEED 25
+
+typedef enum {
+  TITLE=0,
+  GAME=1,
+  OVER=2,
+  PAUSE=3
+} GameState;
 
 extern char *DefaultResources[];
 
@@ -54,7 +57,7 @@ static XtIntervalId IntervalId;
 
 static char *GraphFile = NULL; /* For custom graphics */
 
-static int GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
+static GameState GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
 
 static unsigned int Sc_now;
 
@@ -92,16 +95,6 @@ record_t Record[ RECORD_ENTRY ];
 int Record_entry; /* Size of high-score list;  -1 means scores are not being recorded */
 
 char *Myname;   /* Program name */
-
-
-static void focus_in( void )
-{
-}
-
-
-static void focus_out( void )
-{
-}
 
 
 /* Show current score */
@@ -216,16 +209,9 @@ static void timi( XtPointer c,XtIntervalId id )
     if( ++timer > 250 )
       title();
     break;
-  }
-}
 
-/* Focus change event handler */
-static void focus( Widget w,XtPointer p,XEvent *e )
-{
-  if( e->type == FocusIn )
-    focus_in();
-  else
-    focus_out();
+  default: break;
+  }
 }
 
 /* Expose-screen event handler */
@@ -272,26 +258,62 @@ static void start_game( Widget w,XEvent *e,String *s,Cardinal *num )
   case OVER:
     title();
     break;
+
+  default: break;
   }
 }
 
 
 /* Pause game action handler */
 
-static void pause_game( Widget w,XEvent *e,String *s,Cardinal *num )
+static void try_pause()
 {
-  if( GameMode == 1 ){
+  if( GameMode == GAME ){
     reset_timer();
     XtMapWidget( Pause );
-    GameMode = 3;
-  }else if( GameMode == 3 ){
-    GameMode = 1;
+    GameMode = PAUSE;
+  }
+}
+
+static void try_unpause()
+{
+  if( GameMode == PAUSE ){
+    GameMode = GAME;
     XtUnmapWidget( Pause );
     set_timer();
   }
 }
 
+static void pause_game( Widget w,XEvent *e,String *s,Cardinal *num )
+{
+  if( GameMode == GAME ){
+    try_pause();
+  }else if( GameMode == PAUSE ){
+    try_unpause();
+  }
+}
 
+
+static void focus_in( void )
+{
+  /* do nothing special */
+}
+
+
+static void focus_out( void )
+{
+  try_pause();
+}
+
+
+/* Focus change event handler */
+static void focus( Widget w,XtPointer p,XEvent *e )
+{
+  if( e->type == FocusIn )
+    focus_in();
+  else
+    focus_out();
+}
 
 /* Keydown action handler */
 

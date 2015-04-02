@@ -71,32 +71,41 @@ char *DefaultResources[] = {
 <KeyUp>Left  : key_off(LEFT)         \\n\
 <Key>j       : key_on(LEFT)          \\n\
 <KeyUp>j     : key_off(LEFT)         \\n\
+<Key>a       : key_on(LEFT)          \\n\
+<KeyUp>a     : key_off(LEFT)         \\n\
 <Key>KP_4    : key_on(LEFT)          \\n\
 <KeyUp>KP_4  : key_off(LEFT)         \\n\
-<Btn2Down>   : key_on(LEFT)          \\n\
-<Btn2Up>     : key_off(LEFT)         \\n\
 \
 <Key>Right   : key_on(RIGHT)         \\n\
 <KeyUp>Right : key_off(RIGHT)        \\n\
 <Key>l       : key_on(RIGHT)         \\n\
 <KeyUp>l     : key_off(RIGHT)        \\n\
+<Key>d       : key_on(RIGHT)         \\n\
+<KeyUp>d     : key_off(RIGHT)        \\n\
 <Key>KP_6    : key_on(RIGHT)         \\n\
 <KeyUp>KP_6  : key_off(RIGHT)        \\n\
-<Btn3Down>   : key_on(RIGHT)         \\n\
-<Btn3Up>     : key_off(RIGHT)        \\n\
 \
 <Key>Up      : key_on(UP)start()     \\n\
 <KeyUp>Up    : key_off(UP)           \\n\
+<Key>Down    : key_on(UP)start()     \\n\
+<KeyUp>Down  : key_off(UP)           \\n\
 <Key>space   : key_on(UP)start()     \\n\
 <KeyUp>space : key_off(UP)           \\n\
-<Key>z       : key_on(UP)            \\n\
-<KeyUp>z     : key_off(UP)start()    \\n\
-<Key>KP_8    : key_on(UP)            \\n\
-<KeyUp>KP_8  : key_off(UP)start()    \\n\
-<Btn1Down>   : key_on(UP)            \\n\
-<Btn1Up>     : key_off(UP)start()    \\n\
+<Key>z       : key_on(UP)start()     \\n\
+<KeyUp>z     : key_off(UP)           \\n\
+<Key>w       : key_on(UP)start()     \\n\
+<KeyUp>w     : key_off(UP)           \\n\
+<Key>s       : key_on(UP)start()     \\n\
+<KeyUp>s     : key_off(UP)           \\n\
+<Key>k       : key_on(UP)start()     \\n\
+<KeyUp>k     : key_off(UP)           \\n\
+<Key>i       : key_on(UP)start()     \\n\
+<KeyUp>i     : key_off(UP)           \\n\
+<Key>KP_8    : key_on(UP)start()     \\n\
+<KeyUp>KP_8  : key_off(UP)           \\n\
 \
 <Key>p       : pause()               \\n\
+<Key>Pause   : pause()               \\n\
 Shift<Key>q  : quit()                \\n\
 ",
 NULL};

@@ -59,7 +59,7 @@ static char *GraphFile = NULL; /* For custom graphics */
 
 static GameState GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
 
-static unsigned int Sc_now;
+static int Sc_now;
 
 static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* High score text buffer */
 
@@ -124,7 +124,9 @@ static void make_score( void )
     size_t space_available = sizeof(Score_list) - (p-Score_list);
     int nprinted = snprintf(p, space_available,"%4d  %10d        %-20.20s\n",i+1,
                             Record[i].score, Record[i].name );
-    if(nprinted <= space_available){
+    if(nprinted < 0){
+      break;
+    }else if( (size_t) nprinted <= space_available){
       p += nprinted;
     }else{
       p += space_available;
@@ -182,7 +184,7 @@ static void title( void )
 
 static void timi( XtPointer c,XtIntervalId id )
 {
-  unsigned int floor;
+  int floor;
   static int timer;
 
   IntervalState = 0;
@@ -199,8 +201,8 @@ static void timi( XtPointer c,XtIntervalId id )
     }
     else if( floor > Sc_now ){
       Sc_now = floor;
-      if( Sc_now > UINT_MAX - 5)
-        Sc_now = UINT_MAX - 5;
+      if( Sc_now > INT_MAX - 5)
+        Sc_now = INT_MAX - 5;
       put_score();
     }
     break;

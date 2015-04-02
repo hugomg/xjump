@@ -23,7 +23,7 @@
 #include"xjump.h"
 #include"record.h"
 
-#include"picture.xpm"
+#include"themes/default.xpm"
 #include"icon.xbm"
 #include"icon_msk.xbm"
 

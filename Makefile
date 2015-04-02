@@ -29,7 +29,7 @@ xjump : main.o game.o misc.o record.o resource.o
 		-lXaw -lXt -lXpm -lX11 $(LDIR)
 
 main.o : main.c xjump.h record.h \
-		picture.xpm icon.xbm icon_msk.xbm Makefile
+		themes/default.xpm icon.xbm icon_msk.xbm Makefile
 	$(CC) $(CFLAGS) -c -DRECORD_ENTRY=$(RECORD_ENTRY) main.c $(IDIR)
 
 resource.o : resource.c

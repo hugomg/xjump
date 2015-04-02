@@ -67,4 +67,4 @@ In the following diagram, each letter represents a 16x16 pixel area.
   C = Right column
   D = Platform
 
-For an example, see picture.xpm in xjump's source code.
+For examples, look at the themes folder.

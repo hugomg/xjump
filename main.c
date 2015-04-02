@@ -319,6 +319,11 @@ static void focus( Widget w,XtPointer p,XEvent *e )
 
 static void key_on( Widget w,XEvent *e,String *s,Cardinal *num )
 {
+  if(GameMode == PAUSE){
+    try_unpause();
+    return;
+  }
+  
   switch( **s ){
   case 'U':
     Key[ KEY_UP ] = 1;

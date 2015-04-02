@@ -224,16 +224,16 @@ int move( void )
     if( Hero.jump ){
       Hero.vy = -Hero.jump/2-12;
       if( Key[ KEY_UP ] )
-	Hero.jump--;
+        Hero.jump--;
       else
-	Hero.jump = 0;
+        Hero.jump = 0;
     }else{
       Hero.vy+=2;
       if( Hero.vy > 0 )
-	Hero.pic = 3;
+        Hero.pic = 3;
 
       if( Hero.vy > 16 )
-	Hero.vy = 16;
+        Hero.vy = 16;
     }
   }
 

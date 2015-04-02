@@ -58,7 +58,7 @@ char *DefaultResources[] = {
 "XJump*record_v.allowHoriz      : True",
 "XJump*record_v*borderWidth     : 1",
 
-"XJump*record.font		: -*-fixed-*-*-*-*-20-*-*-*-c-*-*-*",
+"XJump*record.font              : -*-fixed-*-*-*-*-20-*-*-*-c-*-*-*",
 
 "XJump*copyright.label          : (C) 1997 ROYALPANDA",
 "XJump*copyright.foreground     : green",

@@ -252,7 +252,7 @@ void save_record( int sc )
     ftruncate( fileno(fp) ,0 );
     for( i = 0 ; i < Record_entry ; i++ )
       fprintf( fp,"%d %d %s\n",
-	      Record[i].score,Record[i].uid,Record[i].name );
+               Record[i].score,Record[i].uid,Record[i].name );
 
     fclose( fp );
     return;

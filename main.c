@@ -136,8 +136,8 @@ static void make_score( void )
   *p = '\0';
 
   XtVaSetValues( ScoreList,
-		XtNlabel,Score_list,
-		NULL );
+                XtNlabel,Score_list,
+                NULL );
 }
 
 
@@ -200,7 +200,7 @@ static void timi( XtPointer c,XtIntervalId id )
     else if( floor > Sc_now ){
       Sc_now = floor;
       if( Sc_now > UINT_MAX - 5)
-	Sc_now = UINT_MAX - 5;
+        Sc_now = UINT_MAX - 5;
       put_score();
     }
     break;
@@ -218,7 +218,7 @@ static void timi( XtPointer c,XtIntervalId id )
 static void expose( Widget w,XtPointer p,XEvent *e )
 {
   recover_scr( e->xexpose.x,e->xexpose.y,
-	      e->xexpose.width,e->xexpose.height );
+              e->xexpose.width,e->xexpose.height );
   draw_hero();
 }
 
@@ -420,10 +420,10 @@ static void make_graphic( void )
 
   if( GraphFile != NULL )
     i = XpmReadFileToPixmap( Disp,DefaultRootWindow(Disp),GraphFile,
-			    &Char_p,&Char_m,&attr );
+                            &Char_p,&Char_m,&attr );
     else
       i = XpmCreatePixmapFromData( Disp,DefaultRootWindow(Disp),
-				  picture_xpm,&Char_p,&Char_m,&attr );
+                                  picture_xpm,&Char_p,&Char_m,&attr );
   if( i ){
     fprintf( stderr,"%s: %s\n",Myname,XpmGetErrorString(i) );
     exit(1);
@@ -446,16 +446,16 @@ static void init_graph( void )
   Gc_nomask = XCreateGC( Disp,DefaultRootWindow(Disp),0,NULL );
 
   Floor_p = XCreatePixmap( Disp,DefaultRootWindow(Disp),
-			  WIDTH*16,16,
-			  DefaultDepth(Disp,DefaultScreen(Disp)) );
+                          WIDTH*16,16,
+                          DefaultDepth(Disp,DefaultScreen(Disp)) );
   XCopyArea( Disp,Char_p,Floor_p,Gc_nomask,128,16,16,16,0,0 );
   XCopyArea( Disp,Char_p,Floor_p,Gc_nomask,128,32,16,16,WIDTH*16-16,0 );
   for( x = 16 ; x < WIDTH*16-16 ; x+=16 )
     XCopyArea( Disp,Char_p,Floor_p,Gc_nomask,128,48,16,16,x,0 );
 
   Back_p = XCreatePixmap( Disp,DefaultRootWindow(Disp),
-			 WIDTH*16,16,
-			 DefaultDepth(Disp,DefaultScreen(Disp)) );
+                         WIDTH*16,16,
+                         DefaultDepth(Disp,DefaultScreen(Disp)) );
   XCopyArea( Disp,Char_p,Back_p,Gc_nomask,128,16,16,16,0,0 );
   XCopyArea( Disp,Char_p,Back_p,Gc_nomask,128,32,16,16,WIDTH*16-16,0 );
   for( x = 16 ; x < WIDTH*16-16 ; x+=16 )
@@ -486,7 +486,7 @@ int main( int argc,char **argv )
   XtSetLanguageProc( NULL,NULL,NULL );
 
   Top = XtVaAppInitialize( &App,"XJump",NULL,0,
-			  &argc,argv,DefaultResources,NULL );
+                          &argc,argv,DefaultResources,NULL );
 
   Disp = XtDisplay( Top );
 
@@ -502,37 +502,37 @@ int main( int argc,char **argv )
   XtVaCreateManagedWidget( "title",labelWidgetClass,game,NULL );
 
   w = XtVaCreateManagedWidget( "scoreBoard",formWidgetClass,game,
-			      NULL );
+                              NULL );
 
   XtVaCreateManagedWidget( "scLabel",labelWidgetClass,w,
-			  NULL );
+                          NULL );
 
   Score = XtVaCreateManagedWidget( "score",labelWidgetClass,w,
-				  XtNlabel,"0000000000",
-				  NULL );
+                                  XtNlabel,"0000000000",
+                                  NULL );
 
   Gameover = XtVaCreateManagedWidget( "gameover",labelWidgetClass,game,
-				     XtNmappedWhenManaged,FALSE,
-				     NULL );
+                                     XtNmappedWhenManaged,FALSE,
+                                     NULL );
 
   Pause = XtVaCreateManagedWidget( "pause",labelWidgetClass,game,
-				  XtNmappedWhenManaged,FALSE,
-				  NULL );
+                                  XtNmappedWhenManaged,FALSE,
+                                  NULL );
 
   Scr = XtVaCreateManagedWidget( "scr",widgetClass,game,
-				XtNwidth,WIDTH*16,
-				XtNheight,HEIGHT*16,
-				XtNmappedWhenManaged,FALSE,
-				NULL );
+                                XtNwidth,WIDTH*16,
+                                XtNheight,HEIGHT*16,
+                                XtNmappedWhenManaged,FALSE,
+                                NULL );
 
   Score_v = XtVaCreateManagedWidget( "record_v",viewportWidgetClass,game,
-				    XtNwidth,WIDTH*16,
-				    XtNheight,HEIGHT*16,
-				    NULL );
+                                    XtNwidth,WIDTH*16,
+                                    XtNheight,HEIGHT*16,
+                                    NULL );
 
   ScoreList = XtVaCreateManagedWidget( "record",labelWidgetClass,Score_v,
-				      XtNlabel,"",
-				      NULL );
+                                      XtNlabel,"",
+                                      NULL );
 
   XtVaCreateManagedWidget( "copyright",labelWidgetClass,game,NULL );
 

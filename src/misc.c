@@ -6,6 +6,8 @@
   (C) July 16, 1997  ROYALPANDA
 *****************************************/
 
+#define  _GNU_SOURCE
+
 #include<stdlib.h>
 #include<stdio.h>
 #include<time.h>

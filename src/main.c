@@ -6,6 +6,8 @@
   (C) Oct 28, 1997  ROYALPANDA
 *****************************************/
 
+#define _GNU_SOURCE
+
 #include<stdio.h>
 #include <stdlib.h>
 #include<unistd.h>
@@ -22,6 +24,7 @@
 
 #include"xjump.h"
 #include"record.h"
+#include"config.h"
 
 #include"themes/default.xpm"
 #include"icon.xbm"
@@ -480,7 +483,7 @@ int main( int argc,char **argv )
   uid_t uid;
 
   if( (Myname = argv[0]) == NULL )
-    Myname = "xjump";
+    Myname = PACKAGE_NAME;
 
   uid = geteuid();
   seteuid(getuid());

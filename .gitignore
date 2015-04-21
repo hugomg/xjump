@@ -1,2 +1,45 @@
-*.o
+# Compiled outputs
+#-----------------
 xjump
+xjump-*.tar.gz
+
+# Object files
+#-------------
+*.o
+
+# Libraries
+#----------
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects
+#---------------
+*.so
+*.so.*
+
+# Automake
+#---------
+Makefile.in
+Makefile
+
+#  Autoconf
+#----------
+/autom4te.cache
+/aclocal.m4
+/compile
+/configure
+/config.*
+/depcomp
+/install-sh
+/missing
+/stamp-h1
+.deps/
+
+
+# Linux Desktop
+#--------------
+*~
+.directory
+.Trash-*

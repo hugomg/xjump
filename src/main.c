@@ -26,7 +26,6 @@
 #include"record.h"
 #include"config.h"
 
-#include"themes/default.xpm"
 #include"icon.xbm"
 #include"icon_msk.xbm"
 
@@ -58,7 +57,7 @@ static Colormap Cmap;
 static int IntervalState;
 static XtIntervalId IntervalId;
 
-static char *GraphFile = NULL; /* For custom graphics */
+static char *GraphFile = GRAPH_FILE; /* For custom graphics */
 
 static GameState GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
 
@@ -417,20 +416,14 @@ static void option( int argc, char **argv )
 
 static void make_graphic( void )
 {
-  int i;
   XpmAttributes attr;
-
   attr.valuemask = XpmColormap;
   attr.colormap = Cmap;
 
-  if( GraphFile != NULL )
-    i = XpmReadFileToPixmap( Disp,DefaultRootWindow(Disp),GraphFile,
-                            &Char_p,&Char_m,&attr );
-    else
-      i = XpmCreatePixmapFromData( Disp,DefaultRootWindow(Disp),
-                                  picture_xpm,&Char_p,&Char_m,&attr );
-  if( i ){
-    fprintf( stderr,"%s: %s\n",Myname,XpmGetErrorString(i) );
+  int err = XpmReadFileToPixmap( Disp, DefaultRootWindow(Disp), GraphFile,
+                                 &Char_p,&Char_m,&attr );
+  if( err ){
+    fprintf( stderr,"%s: %s\n",Myname,XpmGetErrorString(err) );
     exit(1);
   }
 

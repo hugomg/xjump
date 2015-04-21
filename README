@@ -1,19 +1,27 @@
 # FALLING TOWER Version 2.8
 
-FALLING TOWER is a game where you jump up and up while the tower collapses under your feet.
+A game where you jump up and up while the tower collapses under your feet.
 
 ## Installation
 
-Install xjump using the usual configure + make install pattern:
+If you performed a git clone instead of downloading the source tarball,
+see the Development section of this README for instructions on how to
+generate the configure script.
+
+Once you have the configure script, install xjump using the usual
+configure + make install pattern:
 
     ./configure
     make
     sudo make install
     
-Run `./configure -- help` for a list of configuration options to tweak install locations, etc.
+Run `./configure -- help` for a list of configuration options to tweak
+install locations, etc.
     
-To allow xjump to update the highscore file on behalf of regular user, your system must have a user and group namd `games`.
-We expect this to be standard in Linux distributions.
+To allow xjump to update the highscore file on behalf of regular user,
+your system must have a user and group namd `games`. We expect this to
+be standard in Linux distributions.
+
 
 ## How to run xjump
 
@@ -23,13 +31,10 @@ We expect this to be standard in Linux distributions.
 
 ## Game controls
 
-To move: arrow keys, WASD, IJKL or the keypad arrow keys
-
-To jump: Up or Down arrow keys, Z or SPACE
-
-To pause and unpause: P or the Pause keypad.
-
-To exit the game: Shift+Q
+To move: arrow keys, WASD, IJKL or the keypad arrow keys  
+To jump: Up or Down arrow keys, Z or SPACE  
+To pause and unpause: P or the Pause keypad.  
+To exit the game: Shift+Q  
         
 ## Custom graphics
 
@@ -58,4 +63,16 @@ Legend:
     C = Right column
     D = Platform
 
-For examples, the themes folder.
+For examples, see the themes folder.
+
+## Development
+
+To generate the configure script and the makefile templates you must have
+the GNU autotools installed and run autoreconf:
+
+    autoreconf --install
+
+If you want to delete all thoss files the autotools generated, the best way 
+is via Git itself:
+
+    git clean -xd

@@ -6,7 +6,7 @@ AC_INIT([xjump], [2.8], []) #email
 
 AC_CONFIG_SRCDIR([src/game.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile src/Makefile man/Makefile themes/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile themes/Makefile])
 
 AM_INIT_AUTOMAKE
 

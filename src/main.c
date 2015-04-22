@@ -382,9 +382,9 @@ static void set_icon( void )
 static void help()
 {
   fprintf( stderr,"Usage: %s [options]\n",Myname );
-  fprintf( stderr,"\t-toolkitoption ...\n" );
-  fprintf( stderr,"\t-graphic \"file\"\t\tuse your xpm graphic \"file\"\n" );
   fprintf( stderr,"\t-help\t\t\tshow this messages.\n" );
+  fprintf( stderr,"\t-graphic \"file\"\t\tuse your xpm graphic \"file\"\n" );
+  fprintf( stderr,"\t-toolkitoption ...\n" );
 }
 
 

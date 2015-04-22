@@ -1,5 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src man themes
+SUBDIRS = src themes
+
+dist_man_MANS = xjump.6
 
 desktopdir = $(datadir)/applications
 dist_desktop_DATA = xjump.desktop

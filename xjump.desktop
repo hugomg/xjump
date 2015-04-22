@@ -1,11 +1,11 @@
 [Desktop Entry]
 Version=1.0
-Encoding=UTF-8
 Type=Application
 Name=XJump
-Comment=A jumping game
+Comment=A jumping game for X
 Comment[fr]=Un jeu de saut
+Comment[pt]=Um jogo de pulo para o X
 TryExec=xjump
 Exec=xjump
-Icon=xjump-icon.xpm
-Categories=Application;Game;
+Icon=xjump
+Categories=Game;ArcadeGame;

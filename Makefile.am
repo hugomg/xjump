@@ -15,3 +15,7 @@ install-exec-hook:
 	touch       @localstatedir@/xjump/highscores
 	chmod 660   @localstatedir@/xjump/highscores  || true
 	chgrp games @localstatedir@/xjump/highscores  || true
+
+uninstall-hook:
+	rm -rf @localstatedir@/xjump
+	rm -rf @datadir@/xjump

@@ -169,13 +169,13 @@ static void error( void )
   Record_entry = -1;
 }
 
-void init_record( void )
+void init_record(const char *filename)
 {
   FILE *fp;
 
   Record_entry = -1;
 
-  if( ( fp = fopen( XJUMP_HIGHSCORE_FILENAME,"r+" ) ) == NULL ){
+  if( ( fp = fopen(filename,"a+" ) ) == NULL ){
     error();
     return;
   }
@@ -209,7 +209,7 @@ static void sort_record( void )
 }
 
 
-void save_record( int sc )
+void save_record(const char *filename, int sc )
 {
   FILE *fp;
   int i,r;
@@ -218,7 +218,7 @@ void save_record( int sc )
   if( Record_entry == -1 )
     return ;
 
-  if( (fp = fopen(XJUMP_HIGHSCORE_FILENAME,"r+")) == NULL ){
+  if( (fp = fopen(filename,"r+")) == NULL ){
     error();
     return;
   }

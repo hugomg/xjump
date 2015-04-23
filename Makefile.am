@@ -5,7 +5,7 @@ xjump_themes_dir = @datadir@/xjump/themes
 xjump_highscore_dir = @localstatedir@/xjump
 xjump_settings_dir = @sysconfdir@
 
-xjump_default_theme = "default.xpm"
+xjump_default_theme = "default"
 xjump_highscore_filename = "highscores"
 xjump_highscore_number_of_entries = 20
 xjump_config_filename = "xjump.conf"
@@ -16,8 +16,8 @@ AM_CFLAGS  = --std=c99 --pedantic -Wall -O2
 AM_LDFLAGS = -lXaw -lXt -lXpm -lX11
 AM_CPPFLAGS = \
   -DXJUMP_THEMES_DIR=\"$(xjump_themes_dir)\" \
-  -DXJUMP_SPRITES_FILE=\"$(xjump_themes_dir)/$(xjump_default_theme)\" \
-  -DXJUMP_HIGHSCORE_FILENAME=\"$(xjump_highscore_dir)/$(xjump_highscore_filename)\" \
+  -DXJUMP_SPRITES_FILEPATH=\"$(xjump_themes_dir)/$(xjump_default_theme).xpm\" \
+  -DXJUMP_HIGHSCORE_FILEPATH=\"$(xjump_highscore_dir)/$(xjump_highscore_filename)\" \
   -DXJUMP_HIGHSCORE_ENTRIES=$(xjump_highscore_number_of_entries) \
   -DXJUMP_GLOBAL_SETTINGS_DIR=\"$(xjump_settings_dir)\" \
   -DXJUMP_CONFIG_FILENAME=\"$(xjump_config_filename)\"
@@ -31,6 +31,8 @@ xjump_SOURCES = \
   src/record.c \
   src/record.h \
   src/resource.c \
+  src/safestr.c \
+  src/safestr.h \
   src/xjump.h \
   src/icon.xbm \
   src/icon_msk.xbm

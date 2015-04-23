@@ -36,9 +36,11 @@ You can use the following keys during configuration:
 
 * themeFile : Path to a custom sprite file. Ex.: /usr/share/xjump/themes/jumpnbump.xpm
 * theme : Name of a custom sprite theme bundled with xjump. Ex.: jumpnbump
+* highscoreFile : Path to a different highscore file
 
     # This is an example xjump configuration file
     theme = jumpnbump
+    highscoreFile = /home/me/xjumpscore
 
 ## Custom graphics
 

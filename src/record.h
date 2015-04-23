@@ -22,5 +22,5 @@ extern int Record_entry;
 
 extern char *Myname;
 
-void init_record( void );
-void save_record( int score );
+void init_record(const char*);
+void save_record(const char*, int score);

@@ -11,7 +11,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<ctype.h>
-#include<stdarg.h>
 #include<string.h>
 #include<unistd.h>
 #include<limits.h>
@@ -26,9 +25,10 @@
 #include<X11/Shell.h>
 #include<X11/xpm.h>
 
-#include"xjump.h"
-#include"record.h"
-#include"config.h"
+#include "xjump.h"
+#include "record.h"
+#include "config.h"
+#include "safestr.h"
 
 #include"icon.xbm"
 #include"icon_msk.xbm"
@@ -61,8 +61,8 @@ static Colormap Cmap;
 static int IntervalState;
 static XtIntervalId IntervalId;
 
-/*static char HighscoreFile[PATH_MAX] = XJUMP_HIGHSCORE_FILENAME;*/
-static char GraphFile[PATH_MAX] = XJUMP_SPRITES_FILE;
+static char HighscoreFilepath[PATH_MAX] = XJUMP_HIGHSCORE_FILEPATH;
+static char SpriteFilepath[PATH_MAX] = XJUMP_SPRITES_FILEPATH;
 
 static GameState GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
 
@@ -173,7 +173,7 @@ static void gameover( void )
 
   GameMode = OVER;
 
-  save_record( Sc_now );
+  save_record(HighscoreFilepath, Sc_now);
   make_score();
 
 }
@@ -401,15 +401,21 @@ static void read_command_line_options( int argc, char **argv )
 
   for( i = 1 ; i < argc ; i++ ){
 
-    if( strcmp( argv[i],"-graphic" ) == 0 ){
-      strncpy(GraphFile, argv[++i], PATH_MAX);
-      continue;
-    }
-
     if( strcmp( argv[i],"-help" ) == 0 ){
       help();
       exit(0);
     }
+
+    if( strcmp( argv[i],"-graphic" ) == 0 ){
+      try_strncpy(SpriteFilepath, argv[++i], PATH_MAX);
+      continue;
+    }
+
+    if( strcmp( argv[i], "-highscoreFile" ) == 0 ){
+      try_strncpy(HighscoreFilepath, argv[++i], PATH_MAX);
+      continue;
+    }
+
     fprintf(stderr,"%s: Unknown command line option \"%s\".\n",Myname,argv[i]);
     help();
     exit(1);
@@ -431,21 +437,7 @@ static void trim_string(char *s)
   while(s < out && isspace(*(out-1))){ --out; }
 
   *out = '\0';
-}
 
-
-/* A version of snprintf that errors out if the buffer is too small */
-static int try_snprintf(char *buf, size_t len, const char *fmt, ...)
-{
-  va_list args;
-  va_start(args, fmt);
-  int n = vsnprintf(buf, len, fmt, args);
-  if (n >= len){
-    fprintf(stderr, "fatal error: filename is too long\n");
-    exit(1);
-  }
-  va_end(args);
-  return n;
 }
 
 /* Proccess a configuration file and update the correspondig global variables*/
@@ -485,9 +477,13 @@ static void read_configuration_file(const char * filename)
     trim_string(value);
 
     if      (0 == strcmp(key, "theme")){
-      try_snprintf(GraphFile, PATH_MAX, "%s/%s.xpm", XJUMP_THEMES_DIR, value);
+      try_snprintf(SpriteFilepath, PATH_MAX, "%s/%s.xpm", XJUMP_THEMES_DIR, value);
+
     }else if(0 == strcmp(key, "themeFile")){
-      strncpy(GraphFile, value, PATH_MAX);
+      try_strncpy(SpriteFilepath, value, PATH_MAX);
+
+    }else if(0 == strcmp(key, "highscoreFile")){
+      try_strncpy(HighscoreFilepath, value, PATH_MAX);
     }
   }
 
@@ -529,7 +525,7 @@ static void make_graphic( void )
   attr.valuemask = XpmColormap;
   attr.colormap = Cmap;
 
-  int err = XpmReadFileToPixmap( Disp, DefaultRootWindow(Disp), GraphFile,
+  int err = XpmReadFileToPixmap( Disp, DefaultRootWindow(Disp), SpriteFilepath,
                                  &Char_p,&Char_m,&attr );
   if( err ){
     fprintf( stderr,"%s: %s\n",Myname,XpmGetErrorString(err) );
@@ -661,7 +657,7 @@ int main( int argc,char **argv )
   Map_index = 0;
   Scr_d = XtWindow( Scr );
 
-  init_record();
+  init_record(HighscoreFilepath);
   if( Record_entry != -1 )
     make_score();
 

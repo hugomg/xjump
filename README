@@ -22,20 +22,24 @@ To allow xjump to update the highscore file on behalf of regular user,
 your system must have a user and group namd `games`. We expect this to
 be standard in Linux distributions.
 
-
-## How to run xjump
-
-    xjump [-toolkitoption] [-graphic "graph_file"] [-help]
-        -graphic  Specify a custom graphics file (see below)
-        -help     Show this help message
-
 ## Game controls
 
 To move: arrow keys, WASD, IJKL or the keypad arrow keys  
 To jump: Up or Down arrow keys, Z or SPACE  
 To pause and unpause: P or the Pause keypad.  
 To exit the game: Shift+Q  
-        
+
+## Configuring xjump
+
+To configure xjump create a configuration file at $HOME/.config/xjump.config
+You can use the following keys during configuration:
+
+* themeFile : Path to a custom sprite file. Ex.: /usr/share/xjump/themes/jumpnbump.xpm
+* theme : Name of a custom sprite theme bundled with xjump. Ex.: jumpnbump
+
+    # This is an example xjump configuration file
+    theme = jumpnbump
+
 ## Custom graphics
 
 Xjump can use custom textures in xpm format. The required dimensions are 144x64.

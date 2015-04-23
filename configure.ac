@@ -2,11 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([xjump], [2.8], []) #email
+AC_INIT([xjump], [2.9], []) #email
 
 AC_CONFIG_SRCDIR([src/game.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile src/Makefile themes/Makefile])
+AC_CONFIG_FILES([Makefile])
 
 AM_INIT_AUTOMAKE
 

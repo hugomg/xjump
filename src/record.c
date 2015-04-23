@@ -152,7 +152,7 @@ static void read_record( FILE *fp )
 
   i = 0;
 
-  while( !feof( fp ) && i < RECORD_ENTRY ){
+  while( !feof( fp ) && i < XJUMP_HIGHSCORE_ENTRIES ){
     if( read_entry( fp,&Record[i] ) == 0 )
       i++;
     void_line( fp );
@@ -175,7 +175,7 @@ void init_record( void )
 
   Record_entry = -1;
 
-  if( ( fp = fopen( RECORD_FILE,"r+" ) ) == NULL ){
+  if( ( fp = fopen( XJUMP_HIGHSCORE_FILENAME,"r+" ) ) == NULL ){
     error();
     return;
   }
@@ -218,7 +218,7 @@ void save_record( int sc )
   if( Record_entry == -1 )
     return ;
 
-  if( (fp = fopen(RECORD_FILE,"r+")) == NULL ){
+  if( (fp = fopen(XJUMP_HIGHSCORE_FILENAME,"r+")) == NULL ){
     error();
     return;
   }
@@ -236,11 +236,11 @@ void save_record( int sc )
     }
 
   if( r == -1 ){
-    if( Record_entry < RECORD_ENTRY ){
+    if( Record_entry < XJUMP_HIGHSCORE_ENTRIES ){
       r = Record_entry++;
       Record[r].score = 0;
     }else
-      r = RECORD_ENTRY - 1;
+      r = XJUMP_HIGHSCORE_ENTRIES - 1;
   }
 
   if( sc > Record[r].score ){

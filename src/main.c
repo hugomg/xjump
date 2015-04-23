@@ -9,11 +9,15 @@
 #define _GNU_SOURCE
 
 #include<stdio.h>
-#include <stdlib.h>
+#include<stdlib.h>
+#include<ctype.h>
+#include<stdarg.h>
+#include<string.h>
 #include<unistd.h>
 #include<limits.h>
 #include<sys/types.h>
 #include<signal.h>
+
 #include<X11/Intrinsic.h>
 #include<X11/StringDefs.h>
 #include<X11/Xaw/Form.h>
@@ -57,13 +61,14 @@ static Colormap Cmap;
 static int IntervalState;
 static XtIntervalId IntervalId;
 
-static char *GraphFile = GRAPH_FILE; /* For custom graphics */
+/*static char HighscoreFile[PATH_MAX] = XJUMP_HIGHSCORE_FILENAME;*/
+static char GraphFile[PATH_MAX] = XJUMP_SPRITES_FILE;
 
 static GameState GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
 
 static int Sc_now;
 
-static char Score_list[45*(RECORD_ENTRY+2)+1]="";    /* High score text buffer */
+static char Score_list[45*(XJUMP_HIGHSCORE_ENTRIES+2)+1]="";    /* High score text buffer */
 
 /* Prototypes */
 
@@ -93,7 +98,7 @@ int Floor_R[ HEIGHT ];
 int Map_index;
 int Floor_top;
 
-record_t Record[ RECORD_ENTRY ];
+record_t Record[ XJUMP_HIGHSCORE_ENTRIES ];
 int Record_entry; /* Size of high-score list;  -1 means scores are not being recorded */
 
 char *Myname;   /* Program name */
@@ -397,7 +402,7 @@ static void option( int argc, char **argv )
   for( i = 1 ; i < argc ; i++ ){
 
     if( strcmp( argv[i],"-graphic" ) == 0 ){
-      GraphFile = argv[++i];
+      strncpy(GraphFile, argv[++i], PATH_MAX);
       continue;
     }
 
@@ -411,6 +416,110 @@ static void option( int argc, char **argv )
   }
 }  
 
+
+/* Remove whitespace from the start and end of the string */
+static void trim_string(char *s)
+{
+  char *in = s;
+  char *out = s;
+
+  /* Skip leading whitespace */
+  while(*in && isspace(*in)){ ++in; }
+  while(*in){ *out++ = *in++; }
+
+  /* Erase trailing whitespace */
+  while(s < out && isspace(*(out-1))){ --out; }
+
+  *out = '\0';
+}
+
+
+/* A version of snprintf that errors out if the buffer is too small */
+static int try_snprintf(char *buf, size_t len, const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  int n = vsnprintf(buf, len, fmt, args);
+  if (n >= len){
+    fprintf(stderr, "fatal error: filename is too long\n");
+    exit(1);
+  }
+  va_end(args);
+  return n;
+}
+
+/* Proccess a configuration file and update the correspondig global variables*/
+
+static void read_configuration_file(const char * filename)
+{
+  FILE * file = fopen(filename, "r");
+  if (!file) return;
+
+  size_t size_line = 0;
+  char *line_buf = NULL;
+
+  while(0 < getline(&line_buf, &size_line, file)){
+
+    { /* Comments */
+      if(line_buf[0] == '#') continue; /* This read is safe due to the loop condition */
+    }
+
+    { /* Blank lines */
+      int allspace = 1;
+      for(char *c=line_buf; *c; c++){ allspace = allspace && isspace(*c); }
+      if(allspace) continue;
+    }
+
+    /* Key-Value pairs*/
+
+    char *sep = strchr(line_buf, '=');
+    if(!sep){
+      fprintf(stderr, "Syntax error in %s\n", filename);
+      goto cleanup;
+    }
+
+    *sep = '\0';
+    char *key = line_buf;
+    char *value = sep + 1;
+    trim_string(key);
+    trim_string(value);
+
+    if      (0 == strcmp(key, "theme")){
+      try_snprintf(GraphFile, PATH_MAX, "%s/%s.xpm", XJUMP_THEMES_DIR, value);
+    }else if(0 == strcmp(key, "themeFile")){
+      strncpy(GraphFile, value, PATH_MAX);
+    }
+  }
+
+ cleanup:
+  fclose(file);
+  free(line_buf);
+}
+
+
+/* Read configuration files from lowest to highest priority */
+static void read_configuration_files(void)
+{
+  const char *xdg_config_home = getenv("XDG_CONFIG_HOME");
+  const char *homedir = getenv("HOME");
+  if(!homedir){
+    fprintf(stderr, "$HOME doesn't exist\n");
+    exit(1);
+  }
+
+  char filename[PATH_MAX];
+
+  try_snprintf(filename, PATH_MAX, "%s/%s", XJUMP_GLOBAL_SETTINGS_DIR, XJUMP_CONFIG_FILENAME);
+  read_configuration_file(filename);
+
+  /* Location of user config files, per the Freedesktop spec. */
+  if(xdg_config_home && *xdg_config_home){
+    try_snprintf(filename, PATH_MAX, "%s/%s", xdg_config_home, XJUMP_CONFIG_FILENAME);
+  }else{
+    try_snprintf(filename, PATH_MAX, "%s/.config/%s", homedir, XJUMP_CONFIG_FILENAME);
+  }
+  read_configuration_file(filename);
+}
 
 /* Initialize graphics and textures */
 
@@ -491,6 +600,7 @@ int main( int argc,char **argv )
 
   Cmap = DefaultColormap( Disp,DefaultScreen(Disp) );
 
+  read_configuration_files();
   option( argc,argv );
 
   seteuid( uid );

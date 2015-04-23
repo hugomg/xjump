@@ -47,6 +47,7 @@ dist_themes_DATA = \
 
 # Documentation
 dist_man_MANS = xjump.6
+dist_doc_DATA = README.md
 
 # Desktop stuff
 desktopdir = @datadir@/applications

@@ -38,7 +38,9 @@ You can use the following keys during configuration:
 * theme : Name of a custom sprite theme bundled with xjump. Ex.: jumpnbump
 * highscoreFile : Path to a different highscore file
 
-    # This is an example xjump configuration file
+Here is an example of an xjump configuration file:
+
+    # This is a comment
     theme = jumpnbump
     highscoreFile = /home/me/xjumpscore
 

@@ -5,7 +5,7 @@
 xjump \- a jumping game for X
 .SH SYNOPSIS
 .B xjump
-[ -graphic \fIFILE\fR ] [ -toolkitoption ] ... 
+[ -theme \fINAME\fR ] [ -themeFile \fIFILE\fR ] [ -highscoreFile \fIFILE\fR ] ...
 .br
 .B xjump
 [ -help ]
@@ -23,16 +23,22 @@ while trying to reach the next floor, or the floor you are standing on
 collapses.
 .SH OPTIONS
 .TP
-.BI \-graphic " FILE"
+.BI \-theme " NAME"
+Use a different sprite theme.  For example, -theme jumpnbump.
+Sprite themes are stored on /usr/share/xjump/themes.
+.TP
+.BI \-themeFile " FILE"
 Use the XPM graphic file
 .I FILE
 for graphics.
 .TP
+.BI \-highscoreFile " FILE"
+Store highscores in
+.I FILE
+instead of the default location.
+.TP
 .BR \-help
 Display a summary of command-line syntax.
-.TP
-.BI \-toolkitoption " ..."
-Specify X toolkit options (such as \fI-geometry\fR, \fI-display\fR, etc.).
 
 .SH "GAME CONTROLS"
 To begin the game, press any key from the highscore screen.

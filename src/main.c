@@ -384,14 +384,14 @@ static void set_icon( void )
 }
 
 
-static void help()
+static void print_help_message()
 {
   fprintf( stderr,"Usage: %s [options]\n",Myname );
-  fprintf( stderr,"\t-help\t\t\tshow this messages.\n" );
-  fprintf( stderr,"\t-graphic \"file\"\t\tuse your xpm graphic \"file\"\n" );
-  fprintf( stderr,"\t-toolkitoption ...\n" );
+  fprintf( stderr,"\t-help\t\t\tShow this help message\n" );
+  fprintf( stderr,"\t-theme \"file\"\t\tUse a sprite theme from share/xjump/themes\n" );
+  fprintf( stderr,"\t-themeFile \"file\"\tUse your own xpm graphic \"file\"\n" );
+  fprintf( stderr,"\t-highscoreFile \"file\"\tUse a different highscore file\n" );
 }
-
 
 /* Process command-line args */
 
@@ -401,13 +401,20 @@ static void read_command_line_options( int argc, char **argv )
 
   for( i = 1 ; i < argc ; i++ ){
 
-    if( strcmp( argv[i],"-help" ) == 0 ){
-      help();
+    if( 0 == strcmp(argv[i], "-help")){
+      print_help_message();
       exit(0);
     }
 
-    if( strcmp( argv[i],"-graphic" ) == 0 ){
+    if( 0 == strcmp(argv[i], "-graphic" )
+     || 0 == strcmp(argv[i], "-themeFile")
+    ){
       try_strncpy(SpriteFilepath, argv[++i], PATH_MAX);
+      continue;
+    }
+
+    if( 0 == strcmp(argv[i], "-theme" )){
+      try_snprintf(SpriteFilepath, PATH_MAX, "%s/%s.xpm", XJUMP_THEMES_DIR, argv[++i]);
       continue;
     }
 
@@ -417,7 +424,7 @@ static void read_command_line_options( int argc, char **argv )
     }
 
     fprintf(stderr,"%s: Unknown command line option \"%s\".\n",Myname,argv[i]);
-    help();
+    print_help_message();
     exit(1);
   }
 }  

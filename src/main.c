@@ -459,17 +459,16 @@ static void read_configuration_file(const char * filename)
 
   while(0 < getline(&line_buf, &size_line, file)){
 
-    { /* Comments */
-      if(line_buf[0] == '#') continue; /* This read is safe due to the loop condition */
+    {
+      char *comment = strchr(line_buf, '#');
+      if(comment) *comment = '\0';
     }
 
-    { /* Blank lines */
+    {
       int allspace = 1;
       for(char *c=line_buf; *c; c++){ allspace = allspace && isspace(*c); }
       if(allspace) continue;
     }
-
-    /* Key-Value pairs*/
 
     char *sep = strchr(line_buf, '=');
     if(!sep){

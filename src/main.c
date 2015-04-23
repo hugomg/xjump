@@ -532,10 +532,19 @@ static void make_graphic( void )
   attr.valuemask = XpmColormap;
   attr.colormap = Cmap;
 
-  int err = XpmReadFileToPixmap( Disp, DefaultRootWindow(Disp), SpriteFilepath,
+  const char *spriteFiles[] = {SpriteFilepath, XJUMP_SPRITES_FILEPATH};
+
+  int err = 0;
+  for(unsigned i=0; i < 2; i++){
+    err = XpmReadFileToPixmap( Disp, DefaultRootWindow(Disp), spriteFiles[i],
                                  &Char_p,&Char_m,&attr );
+    if(err){
+      fprintf( stderr,"%s: %s - %s\n",Myname, spriteFiles[i], XpmGetErrorString(err) );
+    }else{
+      break;
+    }
+  }
   if( err ){
-    fprintf( stderr,"%s: %s\n",Myname,XpmGetErrorString(err) );
     exit(1);
   }
 

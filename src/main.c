@@ -395,7 +395,7 @@ static void help()
 
 /* Process command-line args */
 
-static void option( int argc, char **argv )
+static void read_command_line_options( int argc, char **argv )
 {
   int i;
 
@@ -601,7 +601,7 @@ int main( int argc,char **argv )
   Cmap = DefaultColormap( Disp,DefaultScreen(Disp) );
 
   read_configuration_files();
-  option( argc,argv );
+  read_command_line_options( argc,argv );
 
   seteuid( uid );
 

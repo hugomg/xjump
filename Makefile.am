@@ -12,8 +12,7 @@ xjump_config_filename = "xjump.conf"
 
 
 # Sources
-AM_CFLAGS  = --std=c99 --pedantic -Wall -O2
-AM_LDFLAGS = -lXaw -lXt -lXpm -lX11
+AM_CFLAGS = --std=c99 --pedantic -Wall -O2
 AM_CPPFLAGS = \
   -DXJUMP_THEMES_DIR=\"$(xjump_themes_dir)\" \
   -DXJUMP_SPRITES_FILEPATH=\"$(xjump_themes_dir)/$(xjump_default_theme).xpm\" \

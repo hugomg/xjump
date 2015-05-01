@@ -164,7 +164,7 @@ static void read_record( FILE *fp )
 static void error( void )
 {
   perror( Myname );
-  fprintf( stderr,"%s: do not record high-score.\n",Myname);
+  fprintf( stderr,"%s: Could not open highscore file. Highscores will not be recorded.\n",Myname);
 
   Record_entry = -1;
 }

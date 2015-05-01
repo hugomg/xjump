@@ -531,10 +531,14 @@ static void make_graphic( void )
   attr.valuemask = XpmColormap;
   attr.colormap = Cmap;
 
-  const char *spriteFiles[] = {SpriteFilepath, XJUMP_SPRITES_FILEPATH};
+  const char *spriteFiles[] = {
+    SpriteFilepath,
+    XJUMP_SPRITES_FILEPATH,
+    "./themes/default.xpm"
+  };
 
   int err = 0;
-  for(unsigned i=0; i < 2; i++){
+  for(unsigned i=0; i < 3; i++){
     err = XpmReadFileToPixmap( Disp, DefaultRootWindow(Disp), spriteFiles[i],
                                  &Char_p,&Char_m,&attr );
     if(err){
@@ -544,6 +548,7 @@ static void make_graphic( void )
     }
   }
   if( err ){
+    fprintf(stderr, "%s: Could not find background sprite files. Did you forget to run `make install`?\n", Myname);
     exit(1);
   }
 

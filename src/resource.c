@@ -19,7 +19,7 @@ char *DefaultResources[] = {
 "XJump*defaultDistance          : 16",
 "XJump*borderWidth              : 0",
 
-"XJump*title.label              : FALLING TOWER ver " PACKAGE_VERSION ,
+"XJump*title.label              : FALLING TOWER ver " MAJOR_VERSION ,
 "XJump*title.horizDistance      : 64",
 "XJump*title.foreground         : white",
 "XJump*title.background         : blue",

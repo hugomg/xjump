@@ -26,10 +26,12 @@ Makefile
 
 #  Autoconf
 #----------
+/autoscan.log
 /autom4te.cache
 /aclocal.m4
 /compile
 /configure
+/configure.scan
 /config.*
 /depcomp
 /install-sh

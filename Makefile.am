@@ -56,14 +56,14 @@ icondir = @datadir@/icons
 dist_icon_DATA = xjump.png
 
 install-exec-hook:
-	chgrp games @bindir@/xjump  || true
-	chmod +s    @bindir@/xjump  || true
+	chgrp games $(DESTDIR)@bindir@/xjump  || true
+	chmod +s    $(DESTDIR)@bindir@/xjump  || true
 	
-	mkdir -p    $(xjump_highscore_dir)
-	touch       $(xjump_highscore_dir)/$(xjump_highscore_filename)
-	chmod 660   $(xjump_highscore_dir)/$(xjump_highscore_filename)  || true
-	chgrp games $(xjump_highscore_dir)/$(xjump_highscore_filename)  || true
+	mkdir -p    $(DESTDIR)$(xjump_highscore_dir)
+	touch       $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)
+	chmod 660   $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)  || true
+	chgrp games $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)  || true
 
 uninstall-hook:
-	rm -rf $(xjump_highscore_dir)
-	rm -rf @datadir@/xjump
+	rm -rf $(DESTDIR)$(xjump_highscore_dir)
+	rm -rf $(DESTDIR)@datadir@/xjump

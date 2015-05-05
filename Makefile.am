@@ -10,6 +10,10 @@ xjump_highscore_filename = "highscores"
 xjump_highscore_number_of_entries = 20
 xjump_config_filename = "xjump.conf"
 
+####
+
+xjump_highscore_filepath = $(xjump_highscore_dir)/$(xjump_highscore_filename)
+
 # This gets appended later...
 EXTRA_DIST =
 
@@ -20,7 +24,7 @@ AM_CPPFLAGS = \
   -D_FORTIFY_SOURCE=2 \
   -DXJUMP_THEMES_DIR=\"$(xjump_themes_dir)\" \
   -DXJUMP_SPRITES_FILEPATH=\"$(xjump_themes_dir)/$(xjump_default_theme).xpm\" \
-  -DXJUMP_HIGHSCORE_FILEPATH=\"$(xjump_highscore_dir)/$(xjump_highscore_filename)\" \
+  -DXJUMP_HIGHSCORE_FILEPATH=\"$(xjump_highscore_filepath)\" \
   -DXJUMP_HIGHSCORE_ENTRIES=$(xjump_highscore_number_of_entries) \
   -DXJUMP_GLOBAL_SETTINGS_DIR=\"$(xjump_settings_dir)\" \
   -DXJUMP_CONFIG_FILENAME=\"$(xjump_config_filename)\"
@@ -66,8 +70,10 @@ dist_TESTS = \
   scripts/check-desktop-files.sh
 
 install-exec-hook:
-	mkdir -p $(DESTDIR)$(xjump_highscore_dir)
-	touch    $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)
+	if [ ! -e $(DESTDIR)$(xjump_highscore_filepath) ]; then \
+	  mkdir -p $(DESTDIR)$(xjump_highscore_dir); \
+	  echo   > $(DESTDIR)$(xjump_highscore_filepath); \
+	fi # Make sure the highscore file has non-zero length to make rpmlint happy...
 	
 	if [ $$(id -u) = 0 ] && \
 	   getent group  games >/dev/null && \

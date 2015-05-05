@@ -10,6 +10,8 @@ xjump_highscore_filename = "highscores"
 xjump_highscore_number_of_entries = 20
 xjump_config_filename = "xjump.conf"
 
+# This gets appended later...
+EXTRA_DIST =
 
 # Sources
 AM_CFLAGS = --std=c99 --pedantic -Wall -O2
@@ -37,7 +39,6 @@ xjump_SOURCES = \
   src/icon_msk.xbm
 
 # Sprites
-
 themesdir = $(xjump_themes_dir)
 dist_themes_DATA = \
   themes/default.xpm \
@@ -46,23 +47,35 @@ dist_themes_DATA = \
 
 # Documentation
 dist_man_MANS = xjump.6
-dist_doc_DATA = README.md
+EXTRA_DIST += README.md
 
-# Desktop stuff
+# Desktop menu integration
 desktopdir = @datadir@/applications
 dist_desktop_DATA = xjump.desktop
 
-icondir = @datadir@/icons
-dist_icon_DATA = xjump.png
+icondir = @datadir@
+nobase_dist_icon_DATA = \
+  icons/hicolor/32x32/apps/xjump.png
+
+
+# Scripts:
+
+dist_TESTS = \
+  scripts/check-desktop-files.sh
 
 install-exec-hook:
-	chgrp games $(DESTDIR)@bindir@/xjump  || true
-	chmod +s    $(DESTDIR)@bindir@/xjump  || true
+	mkdir -p $(DESTDIR)$(xjump_highscore_dir)
+	touch    $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)
 	
-	mkdir -p    $(DESTDIR)$(xjump_highscore_dir)
-	touch       $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)
-	chmod 660   $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)  || true
-	chgrp games $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)  || true
+	if [ $$(id -u) = 0 ] && \
+	   getent group  games >/dev/null && \
+	   getent passwd games >/dev/null; \
+	then \
+	  chgrp games $(DESTDIR)@bindir@/xjump; \
+	  chmod +s    $(DESTDIR)@bindir@/xjump; \
+	  chmod 660   $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	  chgrp games $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	fi
 
 uninstall-hook:
 	rm -rf $(DESTDIR)$(xjump_highscore_dir)

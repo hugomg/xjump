@@ -23,6 +23,9 @@ xjump-*.tar.gz
 #---------
 Makefile.in
 Makefile
+/test-driver
+*.log
+*.trs
 
 #  Autoconf
 #----------

@@ -14,8 +14,10 @@ xjump_config_filename = "xjump.conf"
 EXTRA_DIST =
 
 # Sources
-AM_CFLAGS = --std=c99 --pedantic -Wall -O2
+AM_CFLAGS = --std=c99 --pedantic -Wall -O2 -fPIE
+AM_LDFLAGS = -pie
 AM_CPPFLAGS = \
+  -D_FORTIFY_SOURCE=2 \
   -DXJUMP_THEMES_DIR=\"$(xjump_themes_dir)\" \
   -DXJUMP_SPRITES_FILEPATH=\"$(xjump_themes_dir)/$(xjump_default_theme).xpm\" \
   -DXJUMP_HIGHSCORE_FILEPATH=\"$(xjump_highscore_dir)/$(xjump_highscore_filename)\" \

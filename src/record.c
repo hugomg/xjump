@@ -148,10 +148,9 @@ static int read_entry( FILE *fp, record_t *rec )
 
 static void read_record( FILE *fp )
 {
-  int i;
+  rewind(fp);
 
-  i = 0;
-
+  int i = 0;
   while( !feof( fp ) && i < XJUMP_HIGHSCORE_ENTRIES ){
     if( read_entry( fp,&Record[i] ) == 0 )
       i++;
@@ -160,28 +159,16 @@ static void read_record( FILE *fp )
   Record_entry = i;
 }
 
-
-static void error( void )
+void init_record(FILE *fp)
 {
-  perror( Myname );
-  fprintf( stderr,"%s: Could not open highscore file. Highscores will not be recorded.\n",Myname);
-
-  Record_entry = -1;
-}
-
-void init_record(const char *filename)
-{
-  FILE *fp;
-
-  Record_entry = -1;
-
-  if( ( fp = fopen(filename,"a+" ) ) == NULL ){
-    error();
+  if(!fp){
+    Record_entry = -1;
     return;
   }
-  flock( fileno(fp),LOCK_EX );
+
+  if(0 != flock( fileno(fp),LOCK_EX )){ exit(1); }
   read_record( fp );
-  fclose( fp );
+  if(0 != flock( fileno(fp),LOCK_UN )){ exit(1); };
 }
 
 static int sort_cmp( record_t *r1, record_t *r2 )
@@ -209,31 +196,25 @@ static void sort_record( void )
 }
 
 
-void save_record(const char *filename, int sc )
+void save_record(FILE *fp, int sc )
 {
-  FILE *fp;
-  int i,r;
-  int uid;
-
-  if( Record_entry == -1 )
-    return ;
-
-  if( (fp = fopen(filename,"r+")) == NULL ){
-    error();
+  if(!fp){
+    Record_entry = -1;
     return;
   }
-
-  flock( fileno(fp),LOCK_EX );
+  
+  if(0 != flock( fileno(fp),LOCK_EX )){ exit(1); }
+  
   read_record( fp );
 
-  r = -1;
-  uid = (int)getuid();
-
-  for( i = 0 ; i < Record_entry ; i++ )
+  int uid = (int)getuid();
+  int r = -1;
+  for(int i = 0 ; i < Record_entry ; i++ ){
     if( Record[i].uid == uid ){
       r = i;
       break;
     }
+  }
 
   if( r == -1 ){
     if( Record_entry < XJUMP_HIGHSCORE_ENTRIES ){
@@ -251,13 +232,14 @@ void save_record(const char *filename, int sc )
     sort_record();
 
     rewind( fp );
-    ftruncate( fileno(fp) ,0 );
-    for( i = 0 ; i < Record_entry ; i++ )
+    if(0 != ftruncate( fileno(fp) ,0 )){ exit(1); }
+    for(int i = 0 ; i < Record_entry ; i++ )
       fprintf( fp,"%d %d %s\n",
                Record[i].score,Record[i].uid,Record[i].name );
 
-    fclose( fp );
-    return;
+    fflush( fp );
   }
-  fclose( fp );
+
+  if(0 != flock( fileno(fp),LOCK_UN )){ exit(1); };
+
 }

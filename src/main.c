@@ -13,6 +13,7 @@
 #include<ctype.h>
 #include<string.h>
 #include<unistd.h>
+#include <grp.h>
 #include<limits.h>
 #include<sys/types.h>
 #include<signal.h>
@@ -61,7 +62,7 @@ static Colormap Cmap;
 static int IntervalState;
 static XtIntervalId IntervalId;
 
-static char HighscoreFilepath[PATH_MAX] = XJUMP_HIGHSCORE_FILEPATH;
+static FILE *HighscoreFile = NULL;
 static char SpriteFilepath[PATH_MAX] = XJUMP_SPRITES_FILEPATH;
 
 static GameState GameMode; /* 0=Title; 1=Game; 2=GameOver; 3=Pause */
@@ -173,7 +174,7 @@ static void gameover( void )
 
   GameMode = OVER;
 
-  save_record(HighscoreFilepath, Sc_now);
+  save_record(HighscoreFile, Sc_now);
   make_score();
 
 }
@@ -390,7 +391,6 @@ static void print_help_message()
   fprintf( stderr,"\t-help\t\t\tShow this help message\n" );
   fprintf( stderr,"\t-theme \"file\"\t\tUse a sprite theme from share/xjump/themes\n" );
   fprintf( stderr,"\t-themeFile \"file\"\tUse your own xpm graphic \"file\"\n" );
-  fprintf( stderr,"\t-highscoreFile \"file\"\tUse a different highscore file\n" );
 }
 
 /* Process command-line args */
@@ -415,11 +415,6 @@ static void read_command_line_options( int argc, char **argv )
 
     if( 0 == strcmp(argv[i], "-theme" )){
       try_snprintf(SpriteFilepath, PATH_MAX, "%s/%s.xpm", XJUMP_THEMES_DIR, argv[++i]);
-      continue;
-    }
-
-    if( strcmp( argv[i], "-highscoreFile" ) == 0 ){
-      try_strncpy(HighscoreFilepath, argv[++i], PATH_MAX);
       continue;
     }
 
@@ -488,8 +483,6 @@ static void read_configuration_file(const char * filename)
     }else if(0 == strcmp(key, "themeFile")){
       try_strncpy(SpriteFilepath, value, PATH_MAX);
 
-    }else if(0 == strcmp(key, "highscoreFile")){
-      try_strncpy(HighscoreFilepath, value, PATH_MAX);
     }
   }
 
@@ -586,8 +579,45 @@ static void init_graph( void )
 
 }
 
-int main( int argc,char **argv )
+int main( int argc, char **argv )
 {
+
+  Myname = (argc > 0 ? argv[0] : PACKAGE_NAME);
+
+  /* The first thing we do is open a handle to the highscore file and drop privileges.
+   * This minimizes the ammount of code that is run setuid/setguid */
+  gid_t realgid = getgid();
+  uid_t realuid = getuid();
+
+  HighscoreFile = fopen(XJUMP_HIGHSCORE_FILEPATH, "r+");
+  if(!HighscoreFile){
+    perror( Myname );
+    fprintf( stderr,"%s: Could not open highscore file. Highscores will not be recorded.\n",Myname);
+    Record_entry = -1;
+  }
+
+  /* When dropping privileges from root, the `setgroups` call will
+   * remove any extraneous groups. If we don't call this, then even
+   * though our uid has dropped, we may still have groups that enable
+   * us to do super-user things. This will fail if we aren't root, so
+   * don't bother checking the return value, this is just done as an
+   * optimistic privilege dropping function. */
+  setgroups(0, NULL);
+
+  if (setresgid(-1, realgid, realgid) != 0) {
+    perror("Could not drop setgid privileges.  Aborting.");
+    exit(1);
+  }
+
+  /* Dropping user privileges must come last.
+   * Otherwise we won't be able to drop group privileges anymore */
+  if (setresuid(-1, realuid, realuid) != 0) {
+    perror("Could not drop setuid privileges.  Aborting.");
+    exit(1);
+  }
+
+  /* From now on we run with regular user privileges */
+
   static XtActionsRec a_table[] = {
     {"start",  (XtActionProc)start_game},
     {"pause",  (XtActionProc)pause_game},
@@ -596,15 +626,7 @@ int main( int argc,char **argv )
     {"key_off",(XtActionProc)key_off},
   };
 
-  Widget game,w;
-
-  uid_t uid;
-
-  if( (Myname = argv[0]) == NULL )
-    Myname = PACKAGE_NAME;
-
-  uid = geteuid();
-  seteuid(getuid());
+  Widget game, w;
 
   XtSetLanguageProc( NULL,NULL,NULL );
 
@@ -618,8 +640,6 @@ int main( int argc,char **argv )
 
   read_configuration_files();
   read_command_line_options( argc,argv );
-
-  seteuid( uid );
 
   game = XtVaCreateManagedWidget( "game",formWidgetClass,Top,NULL );
 
@@ -677,7 +697,7 @@ int main( int argc,char **argv )
   Map_index = 0;
   Scr_d = XtWindow( Scr );
 
-  init_record(HighscoreFilepath);
+  init_record(HighscoreFile);
   if( Record_entry != -1 )
     make_score();
 

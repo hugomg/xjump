@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([xjump], [2.9.1], [hgualandi@gmail.com])
+AC_INIT([xjump], [2.9.2], [hgualandi@gmail.com])
 AC_DEFINE([MAJOR_VERSION], ["2.9"], [Major version number])  # To display inside game. Dunno how to automate this
 
 AC_CONFIG_SRCDIR([src/game.c])

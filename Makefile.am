@@ -70,9 +70,9 @@ dist_TESTS = \
   scripts/check-desktop-files.sh
 
 install-exec-hook:
-	if [ ! -e $(DESTDIR)$(xjump_highscore_filepath) ]; then \
+	if [ ! -e  $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename) ]; then \
 	  mkdir -p $(DESTDIR)$(xjump_highscore_dir); \
-	  echo   > $(DESTDIR)$(xjump_highscore_filepath); \
+	  echo   > $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
 	fi # Make sure the highscore file has non-zero length to make rpmlint happy...
 	
 	if [ $$(id -u) = 0 ] && \
@@ -80,9 +80,11 @@ install-exec-hook:
 	   getent passwd games >/dev/null; \
 	then \
 	  chgrp games $(DESTDIR)@bindir@/xjump; \
-	  chmod +s    $(DESTDIR)@bindir@/xjump; \
-	  chmod 660   $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	  chmod g+s   $(DESTDIR)@bindir@/xjump; \
+	  chgrp games $(DESTDIR)$(xjump_highscore_dir); \
+	  chmod 755   $(DESTDIR)$(xjump_highscore_dir); \
 	  chgrp games $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	  chmod 660   $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
 	fi
 
 uninstall-hook:

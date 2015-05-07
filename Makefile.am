@@ -80,11 +80,9 @@ install-exec-hook:
 	   getent passwd games >/dev/null; \
 	then \
 	  chgrp games $(DESTDIR)@bindir@/xjump; \
-	  chmod g+s   $(DESTDIR)@bindir@/xjump; \
-	  chgrp games $(DESTDIR)$(xjump_highscore_dir); \
-	  chmod 755   $(DESTDIR)$(xjump_highscore_dir); \
+	  chmod 2755  $(DESTDIR)@bindir@/xjump; \
 	  chgrp games $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
-	  chmod 660   $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	  chmod 0660  $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
 	fi
 
 uninstall-hook:

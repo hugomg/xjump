@@ -51,40 +51,42 @@ dist_themes_DATA = \
   themes/ion.xpm \
   themes/jumpnbump.xpm
 
+# Desktop menu integration
+EXTRA_DIST += \
+  xjump.desktop \
+  icons/xjump.xpm \
+  icons/32x32.png
+
 # Documentation
 dist_man_MANS = xjump.6
 EXTRA_DIST += README.md
 
-# Desktop menu integration
-desktopdir = @datadir@/applications
-dist_desktop_DATA = xjump.desktop
-
-icondir = @datadir@
-nobase_dist_icon_DATA = \
-  icons/hicolor/32x32/apps/xjump.png
-
-
 # Scripts:
-
 dist_TESTS = \
   scripts/check-desktop-files.sh
 
 install-exec-hook:
-	if [ ! -e  $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename) ]; then \
-	  mkdir -p $(DESTDIR)$(xjump_highscore_dir); \
-	  echo   > $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	install -D -m 644 xjump.desktop   "$(DESTDIR)@datadir@/applications/xjump.desktop"
+	install -D -m 644 icons/xjump.xpm "$(DESTDIR)@datadir@/pixmaps/xjump.xpm"
+	for dim in '32x32'; do \
+	    install -D -m 644 "icons/$${dim}.png"  "$(DESTDIR)@datadir@/icons/hicolor/$${dim}/apps/xjump.png"; \
+	done
+	
+	if [ ! -e  "$(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)" ]; then \
+	  mkdir -p "$(DESTDIR)$(xjump_highscore_dir)"; \
+	  echo   > "$(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)"; \
 	fi # Make sure the highscore file has non-zero length to make rpmlint happy...
 	
 	if [ $$(id -u) = 0 ] && \
 	   getent group  games >/dev/null && \
 	   getent passwd games >/dev/null; \
 	then \
-	  chgrp games $(DESTDIR)@bindir@/xjump; \
-	  chmod 2755  $(DESTDIR)@bindir@/xjump; \
-	  chgrp games $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
-	  chmod 0660  $(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename); \
+	  chgrp games "$(DESTDIR)@bindir@/xjump"; \
+	  chmod 2755  "$(DESTDIR)@bindir@/xjump"; \
+	  chgrp games "$(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)"; \
+	  chmod 0660  "$(DESTDIR)$(xjump_highscore_dir)/$(xjump_highscore_filename)"; \
 	fi
 
 uninstall-hook:
-	rm -rf $(DESTDIR)$(xjump_highscore_dir)
-	rm -rf $(DESTDIR)@datadir@/xjump
+	rm -rf "$(DESTDIR)$(xjump_highscore_dir)"
+	rm -rf "$(DESTDIR)@datadir@/xjump"

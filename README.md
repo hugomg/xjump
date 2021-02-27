@@ -1,3 +1,7 @@
+I now have a new version of Xjump, rewritten using SDL. This repository is for the old version that still uses Xlib.
+
+Check out the new version here --> https://github.com/hugomg/xjump-sdl !
+
 # FALLING TOWER Version 2.9
 
 A game where you jump up and up while the tower collapses under your feet.
